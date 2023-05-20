@@ -6,7 +6,7 @@ export class TaskUseCases {
   }
 
   getTasks = ({ params }) => {
-    const Tasks = this.TaskRepository.getTasks(params)
+    const Tasks = this.TaskRepository.getAll(params)
     return Tasks
   }
 
