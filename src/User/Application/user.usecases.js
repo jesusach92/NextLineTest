@@ -2,7 +2,7 @@ import UserEntity from '../Domain/user.entity.js'
 import { UUIDUtils } from '../../Shared/Infraestructure/utils/uuids.util.js'
 import {PasswordUtil} from '../../Shared/Infraestructure/utils/passwords.util.js'
 import "dotenv/config.js"
-import e, { response } from 'express'
+
 
 export class UserUseCases {
     constructor(UserRepository){
@@ -27,8 +27,7 @@ export class UserUseCases {
         const userWithOutPassword = this.quitPassword(user)
         return userWithOutPassword
       } catch (error) {
-
-        return e
+        return error
       }  
        
     }
@@ -44,6 +43,12 @@ export class UserUseCases {
           return userWithOutPassword
     }
 
+    getUserPasswordHash = async (uuid)=>{
+        const user= await this.UserRepository.findOne(uuid)
+        const {password} = user
+        return password
+    }
+
     getUsers = async (params)=>{
         const users = await this.UserRepository.getAll(params)
         if(users && users.length > 0){
@@ -54,7 +59,11 @@ export class UserUseCases {
     }
 
     updateUser = async (fields) =>{
-        const {uuid, ...fieldtoUpdate}=fields
+        let {uuid,password,...fieldtoUpdate}=fields
+        if(password){
+           const passwordHash = await this.passwordUtils.genetareHashPassword(password)
+            fieldtoUpdate.password = passwordHash
+        }
         const uuidUpdated = await this.UserRepository.updateOne(uuid,fieldtoUpdate)
         if(uuidUpdated === uuid)
         {
