@@ -1,5 +1,5 @@
 export class TaskShareEntity {
-  constructor( userID, taskID ) {
+  constructor(userID, taskID) {
     this.userID = userID
     this.taskID = taskID
   }
