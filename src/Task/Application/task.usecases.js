@@ -17,13 +17,13 @@ export class TaskUseCases {
     this.uuidUtils = new UUIDUtils()
   }
 
-  getTasks = (params) => {
-    const Tasks = this.taskRepository.getAll(params)
-    return Tasks
+  getTasks = async (params) => {
+    const Tasks = await this.taskRepository.getAll(params)
+    return { Total: Tasks.length, Tasks }
   }
 
-  findTask = (uuidTask) => {
-    const Task = this.taskRepository.findOne(uuidTask)
+  findTask = async (uuidTask) => {
+    const Task = await this.taskRepository.findOne(uuidTask)
     return Task
   }
 
@@ -44,13 +44,7 @@ export class TaskUseCases {
       } = data
       const uuid = this.uuidUtils.generate()
       const { id } = await this.userUsesCase.findUser(createdBy)
-      console.log(
-        sharedWith.split(','),
-        comments,
-        responsible,
-        tags.split(','),
-        file
-      )
+
       const Task = new TaskEntity({
         uuid,
         title,
@@ -64,7 +58,6 @@ export class TaskUseCases {
 
       return { ...newTask, createdBy }
     } catch (error) {
-      console.log(error)
       return error
     }
   }
@@ -88,8 +81,8 @@ export class TaskUseCases {
     return TaskUpdated
   }
 
-  deleteTask = (uuidTask) => {
-    const uuidTaskDeleted = this.taskRepository.deleteOne(uuidTask)
+  deleteTask = async (uuidTask) => {
+    const uuidTaskDeleted = await this.taskRepository.deleteOne(uuidTask)
     return uuidTaskDeleted
   }
 }

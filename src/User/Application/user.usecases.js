@@ -37,6 +37,7 @@ export class UserUseCases {
         userEntity.generateUser()
       )
       const userWithOutPassword = this.quitPassword(user)
+
       return userWithOutPassword
     } catch (error) {
       return error

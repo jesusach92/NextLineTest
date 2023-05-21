@@ -1,7 +1,7 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class MySQLTaskRepository {
+export class MySQLTaskShareRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
@@ -9,11 +9,12 @@ export class MySQLTaskRepository {
 
   getAll = async (params) => {
     try {
+      const queryUtils = new MySQLUtils('taskshared')
+      const query = queryUtils.execute(params)
       const db = await this.MySQL.createConnection()
-      const [tasks] = await db.query('SELECT * FROM tasks;')
-
+      const [taskshares] = await db.query('SELECT * FROM taskshared;')
       db.end()
-      return tasks
+      return taskshares
     } catch (e) {
       throw new Error('Error Desconocido')
     }
@@ -22,30 +23,33 @@ export class MySQLTaskRepository {
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[task]] = await db.query('SELECT * FROM tasks WHERE uuid= ?;', [
-        uuid
-      ])
+      const [[taskshare]] = await db.query(
+        'SELECT * FROM taskshares WHERE uuid= ?;',
+        [uuid]
+      )
       await db.end()
-      if (!task) {
-        throw new Error('Tarea no Encontrada')
+      if (!taskshare) {
+        throw new Error('Usuario no Encontrado')
       }
-      return task
+      return taskshare
     } catch (error) {
       return error
     }
   }
 
-  createOne = async (task) => {
+  createOne = async (taskshare) => {
+    console.log(taskshare)
     try {
       const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query('INSERT INTO tasks SET ?;', [
-        task
-      ])
+      const [ResultSetHeader] = await db.query(
+        'INSERT INTO taskshared SET ?;',
+        [taskshare]
+      )
       await db.end()
-      if (!task) {
-        throw new Error('Tarea no Creada')
+      if (ResultSetHeader || ResultSetHeader.insertId === 0) {
+        throw new Error('Usuario no Creado')
       }
-      return { id: ResultSetHeader.insertId, ...task }
+      return taskshare
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
@@ -55,7 +59,7 @@ export class MySQLTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'UPDATE tasks SET ? WHERE uuid = ?',
+        'UPDATE taskshares SET ? WHERE uuid = ?',
         [fieldToUpdate, uuid]
       )
       await db.end()
@@ -64,6 +68,7 @@ export class MySQLTaskRepository {
       }
       return uuid
     } catch (error) {
+      console.log(error)
       return new Error('Error Inesperado')
     }
   }
@@ -72,7 +77,7 @@ export class MySQLTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM tasks WHERE uuid=?',
+        'DELETE FROM taskshares WHERE uuid=?',
         [uuid]
       )
       await db.end()

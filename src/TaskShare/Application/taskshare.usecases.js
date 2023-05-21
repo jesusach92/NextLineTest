@@ -11,28 +11,37 @@ export class TaskShareUseCases {
     this.passwordUtils = new PasswordUtil()
   }
 
-  shareMultipleUserTask = async (usersUUIDS, responsible, uuidTask) => {
+  shareTask = async ({ usersUUIDS, responsible, uuidTask }) => {
     try {
-      const sharedTask = usersUUIDS.map(async (useruuid) => {
-        const isReponsible = useruuid === responsible
-        return await this.shareTaskperUser(useruuid, isReponsible, uuidTask)
-      })
-      return sharedTask
+      const task = await this.taskUseCases.findTask(uuidTask)
+      if (task.isPublic) {
+        const sharedTask = usersUUIDS.map(async (useruuid) => {
+          const isReponsible = useruuid === responsible
+          return await this.shareTaskperUser(useruuid, isReponsible, task.id)
+        })
+        return sharedTask
+      }
+      throw new Error('La tarea no es Publica')
     } catch (error) {
       return error
     }
   }
 
-  shareTaskperUser = async (useruuid, isResponsible, uuidTask) => {
+  shareTaskperUser = async (useruuid, isResponsible, taskId) => {
     try {
-      const task = await this.taskUseCases.findTask(uuidTask)
       const user = await this.usersUseCases.findUser(useruuid)
-      const taskshareEntity = new TaskShareEntity(user.id, task.id)
+      const taskshareEntity = new TaskShareEntity(
+        user.id,
+        taskId,
+        isResponsible
+      )
       const taskshare = await this.taskshareRepository.createOne(
         taskshareEntity
       )
       return taskshare
-    } catch (error) {}
+    } catch (error) {
+      return error
+    }
   }
 
   stopSharing = async (uuid) => {
@@ -44,11 +53,14 @@ export class TaskShareUseCases {
     }
   }
 
-  getUsersByTask = async (uuid) => {
+  toDoResponsible = async (uuid) => {
     try {
-      const taskshare = await this.taskshareRepository.findOne(uuid)
-      const taskshareWithOutPassword = this.quitPassword(taskshare)
-      return taskshareWithOutPassword
+      const uuidrecover = uuid.$filter.split('=')[1]
+      const { id } = await this.usersUseCases.findUser(uuidrecover)
+      const sharedUsers = await this.taskshareRepository.getAll({
+        $filter: `fkUser eq ${id}`
+      })
+      return sharedUsers
     } catch (e) {
       return e
     }
@@ -64,7 +76,7 @@ export class TaskShareUseCases {
     }
   }
 
-  gettaskshares = async (params) => {
+  getTaskShared = async (params) => {
     const taskshares = await this.taskshareRepository.getAll(params)
     if (taskshares && taskshares.length > 0) {
       const tasksharesWithoutPassword = taskshares.map((e) =>
@@ -75,11 +87,11 @@ export class TaskShareUseCases {
     return taskshares
   }
 
-  updatetaskshare = async (fields) => {
-    try {
-      return null
-    } catch (e) {
-      return e
-    }
-  }
+  // updatetaskshare = async (fields) => {
+  //   try {
+  //     return null
+  //   } catch (e) {
+  //     return e
+  //   }
+  // }
 }

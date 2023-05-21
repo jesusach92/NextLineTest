@@ -1,31 +1,37 @@
-
 export class TaskController {
-  constructor(taskUseCases){
+  constructor(taskUseCases) {
     this.taskUseCases = taskUseCases
   }
 
-  getAll = async(req, res)=>{
-    const  tasks = await this.taskUseCases.getTasks(req.query)
-      return res.status(200).json(tasks)
-  }
- getOne = async (req, res)=>{
-    const task =await this.taskUseCases.findTask(req.params.id)
-  return res.status(200).json(task)
+  getAll = async (req, res) => {
+    const tasks = await this.taskUseCases.getTasks(req.query)
+
+    return res.status(200).json(tasks)
   }
 
-  createOne =async (req, res)=>{
-        const taskuuid =await this.taskUseCases.createTask({...req.body, file: req.files.file})
-        return res.status(201).json(taskuuid)
+  getOne = async (req, res) => {
+    const task = await this.taskUseCases.findTask(req.params.id)
+    return res.status(200).json(task)
   }
 
-  deleteOne=async (req, res)=>{
-      const taskuuidDeleted =await this.taskUseCases.deleteTask(req.params.id)
-      return res.status(200).json(taskuuidDeleted)
-    }
+  createOne = async (req, res) => {
+    const taskuuid = await this.taskUseCases.createTask({
+      ...req.body,
+      file: req.files.file
+    })
+    return res.status(201).json(taskuuid)
+  }
 
-  updateOne = async(req, res)=>{
-    const updatedtask =await this.taskUseCases.updateTask({...req.body, file:req.files.file})
+  deleteOne = async (req, res) => {
+    const taskuuidDeleted = await this.taskUseCases.deleteTask(req.params.id)
+    return res.status(200).json(taskuuidDeleted)
+  }
+
+  updateOne = async (req, res) => {
+    const updatedtask = await this.taskUseCases.updateTask({
+      ...req.body,
+      file: req.files.file
+    })
     return res.status(200).json(updatedtask)
   }
-
 }
