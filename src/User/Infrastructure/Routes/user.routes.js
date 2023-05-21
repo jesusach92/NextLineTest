@@ -5,7 +5,7 @@ import {MySQLUserReposiroty} from '../Repository/user.mysql.repository.js'
 import { MockUserReposiroty } from '../Repository/user.mock.respository.js'
 
 const userRepository = new MySQLUserReposiroty ()
-const userUseCases = new UserUseCases(userRepository)
+export const userUseCases = new UserUseCases(userRepository)
 const userController = new UserController(userUseCases)
 
 

@@ -23,7 +23,7 @@ export class TaskEntity {
       title: this.title,
       description: this.description,
       status: this.status,
-      isPiblic: this.isPublic,
+      isPublic: this.isPublic,
       createdBy: this.createdBy,
       dueDate: this.dueDate
     }

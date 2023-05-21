@@ -1,7 +1,8 @@
 import UserEntity from '../Domain/user.entity.js'
-import { UUIDUtils } from '../../Shared/Infraestructure/utils/uuids.util.js'
-import {PasswordUtil} from '../../Shared/Infraestructure/utils/passwords.util.js'
+
 import "dotenv/config.js"
+import { PasswordUtil } from '../../Shared/Infrastructure/utils/password.util.js'
+import { UUIDUtils } from '../../Shared/Infrastructure/utils/uuids.util.js'
 
 
 export class UserUseCases {
@@ -33,20 +34,37 @@ export class UserUseCases {
     }
 
     deleteUser = async (uuid)=>{
-        const uuidDeleted = await this.UserRepository.deleteOne(uuid)
+      try {
+         const uuidDeleted = await this.UserRepository.deleteOne(uuid)
         return uuidDeleted
+      } catch (error) {
+        return error
+      }
+       
     }
 
     findUser = async (uuid)=>{
-        const user = await this.UserRepository.findOne(uuid)
+      try
+      { const user = await this.UserRepository.findOne(uuid)
         const  userWithOutPassword = this.quitPassword(user) 
           return userWithOutPassword
+        }
+          catch (e){
+            return e
+          }
     }
 
     getUserPasswordHash = async (uuid)=>{
+      try{
         const user= await this.UserRepository.findOne(uuid)
         const {password} = user
         return password
+      }
+      catch(error)
+      {
+        return error
+      }
+        
     }
 
     getUsers = async (params)=>{
@@ -59,6 +77,7 @@ export class UserUseCases {
     }
 
     updateUser = async (fields) =>{
+      try{
         let {uuid,password,...fieldtoUpdate}=fields
         if(password){
            const passwordHash = await this.passwordUtils.genetareHashPassword(password)
@@ -71,6 +90,11 @@ export class UserUseCases {
             return userUpdated
         }
         return updatedUser
+      }catch(error)
+      {
+        return error
+      }
+        
     }
 
 }

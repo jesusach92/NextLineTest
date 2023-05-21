@@ -8,7 +8,7 @@ export class MySQLUserReposiroty {
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async ({ params }) => {
+  getAll = async (params) => {
     try {
       const db = await this.MySQL.createConnection()
       const [users] = await db.query("SELECT * FROM users;")
@@ -43,10 +43,12 @@ export class MySQLUserReposiroty {
     try {
         const db = await this.MySQL.createConnection()
         const [ResultSetHeader] =await db.query('INSERT INTO users SET ?;',[user])  
-        await db.end()
-        const {password, ...newUser} = user
-        console.log(newUser)
-        return newUser
+        await db.end()  
+        if(!user)
+        {
+          throw new Error('Usuario no Creado')
+        }
+     return user
         }
      catch (error) {
       throw new Error(error.sqlMessage)

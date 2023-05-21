@@ -3,10 +3,10 @@ import mysql from 'mysql2/promise'
 
 export class MySQLConnection {
   constructor() {
-    this.host = process.env.DB_HOST || 'localhost'
-    this.user = process.env.DB_USER || 'root'
-    this.password = process.env.DB_PASSWORD
-    this.database = process.env.DB_NAME
+    this.host = process.env.MYSQL_HOST || 'localhost'
+    this.user = process.env.MYSQL_USER || 'root'
+    this.password = process.env.MYSQL_PASSWORD
+    this.database = process.env.MYSQL_NAME
   }
 
   createConnection = async () => {

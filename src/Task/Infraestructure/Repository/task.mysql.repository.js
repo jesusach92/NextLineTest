@@ -1,35 +1,84 @@
-import { MySQLConnection } from '../db/MySQL/myslq.config'
-import { MySQLUtils } from '../db/MySQL/mysql.utils'
+import { MySQLConnection } from '../db/MySQL/myslq.config.js'
+import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class TaskMySQLReposiroty {
+export class MySQLtaskReposiroty {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async ({ params }) => {
+  getAll = async (params) => {
     try {
       const db = await this.MySQL.createConnection()
-      const query = new this.MySQLUtils('tasks')
-      const Taks = db.query(query.execute(params))
-      return Taks
+      const [tasks] = await db.query("SELECT * FROM tasks;")
+      db.end()
+      return tasks
+      
     } catch (e) {
       throw new Error('Error Desconocido')
     }
   }
 
-  findOne = async () => {}
+  findOne = async (uuid) => {
+      try {
+          const db = await this.MySQL.createConnection()
+          const [[task]] =await db.query("SELECT * FROM tasks WHERE uuid= ?;",[
+            uuid
+          ])
+          await db.end()
+          if(!task)
+          {
+            throw new Error('Tarea no Encontrada')
+          }
+       return task
+      } catch (error) {
+        return error
+      }
+  }
 
-  createOne =async() => 
+  createOne =async(task) => 
   {
     try {
-              
-    } catch (error) {
-      
+        const db = await this.MySQL.createConnection()
+        const [ResultSetHeader] =await db.query('INSERT INTO tasks SET ?;',[task])  
+        await db.end()  
+        if(!task)
+        {
+          throw new Error('Tarea no Creada')
+        }
+     return{ id:ResultSetHeader.insertId,...task,}
+        }
+     catch (error) {
+      throw new Error(error.sqlMessage)
     }
   }
 
-  updateOne = async () => {}
+  updateOne = async (uuid,fieldToUpdate) => {
+    try {
+      const db= await this.MySQL.createConnection()
+      const [ResultSetHeader] =await  db.query('UPDATE tasks SET ? WHERE uuid = ?',[fieldToUpdate,uuid])
+      await db.end()
+      if(ResultSetHeader.affectedRows === 0){
+        throw new Error('No se pudo Actualizar')
+       }
+      return uuid
+    } catch (error) {
+      console.log(error)
+      return new Error('Error Inesperado')
+    }
+  }
 
-  deleteOne = async () => {}
+  deleteOne = async (uuid) => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const [ResultSetHeader]=await  db.query('DELETE FROM tasks WHERE uuid=?',[uuid])
+     await  db.end()
+      if(ResultSetHeader.affectedRows === 0){
+        throw new Error('No se pudo borrar')
+       }
+      return uuid
+    } catch (error) {
+    return error
+    }
+  }
 }
