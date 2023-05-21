@@ -25,7 +25,7 @@ export class TaskUseCases {
       dueDate,
       sharedWith,
       comments,
-      createdBy,
+     userid,
       responsible,
       tags,
       file
@@ -39,13 +39,15 @@ export class TaskUseCases {
       status,
       dueDate,
       isPublic,
-      createdBy
+      createdBy : userid
     })
-    const uuidTask = this.TaskRepository.createOne(Task)
+    const uuidTask = this.TaskRepository.createOne(Task.generateTask())
     return uuidTask
   }
 
   updateTask = ({ uuidTask, data }) => {
+
+
     const TaskUpdated = this.TaskRepository.updateOne(uuidTask, data)
     return TaskUpdated
   }

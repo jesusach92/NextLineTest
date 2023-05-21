@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 
 export class UUIDUtils {
-  generateUUID = () => {
+  generate = () => {
     return v4()
   }
 }

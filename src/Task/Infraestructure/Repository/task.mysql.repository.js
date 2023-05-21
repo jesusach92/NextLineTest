@@ -20,7 +20,14 @@ export class TaskMySQLReposiroty {
 
   findOne = async () => {}
 
-  createOne = (async) => {}
+  createOne =async() => 
+  {
+    try {
+              
+    } catch (error) {
+      
+    }
+  }
 
   updateOne = async () => {}
 

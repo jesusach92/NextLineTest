@@ -1,7 +1,6 @@
-import app from "./app.entry.js";
+import Application from "./app.entry.js";
 import "dotenv/config"
 
+const server = new Application(process.env.PORT_SERVER || 3000)
 
-app.listen(process.env.PORT,()=>{
-    console.log("Server is running")
-})
+server.start()
