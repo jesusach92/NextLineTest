@@ -5,103 +5,60 @@ import { PasswordUtil } from '../../Shared/Infrastructure/utils/password.util.js
 import { UUIDUtils } from '../../Shared/Infrastructure/utils/uuids.util.js'
 
 export class tagtaskUseCases {
-  constructor(tagtaskRepository) {
+  constructor(tagtaskRepository, taskUseCases, tasgsUseCases) {
     this.tagtaskRepository = tagtaskRepository
+    this.taskUseCases = taskUseCases
+    this.tasgsUseCases = tasgsUseCases
     this.uuidUtils = new UUIDUtils()
     this.passwordUtils = new PasswordUtil()
   }
 
-  quitPassword = (tagtask) => {
-    if (!tagtask) {
-      return tagtask
-    }
-    const { password, ...tagtaskWithOutPass } = tagtask
-    return tagtaskWithOutPass
-  }
-
   createtagtask = async (data) => {
     try {
-      const { name, email, password, tagtaskType } = data
+      const { taskUUID, tagUUID } = data
       const uuid = this.uuidUtils.generate()
-      const passwordHash = await this.passwordUtils.genetareHashPassword(
-        password
-      )
+      const task = this.taskUseCases.findTask(taskUUID)
+      const tag = this.tasgsUseCases.findTag(tagUUID)
       const tagtaskEntity = new TagTaskEntity(
-        email,
-        name,
-        passwordHash,
         uuid,
-        tagtaskType
+        task.id,
+        taskUUID,
+        tag.id,
+        tagUUID
       )
       const tagtask = await this.tagtaskRepository.createOne(
         tagtaskEntity.generatetagtask()
       )
-      const tagtaskWithOutPassword = this.quitPassword(tagtask)
-
-      return tagtaskWithOutPassword
+      if (tagtask) return tagtaskEntity.generateTag()
     } catch (error) {
-      return error
+      return new Error('No se pudo Agregar la Etiquea a la Tarea')
     }
   }
 
   deletetagtask = async (uuid) => {
     try {
-      const uuidDeleted = await this.tagtaskRepository.deleteOne(uuid)
-      return uuidDeleted
-    } catch (error) {
-      return error
-    }
-  }
-
-  findtagtask = async (uuid) => {
-    try {
       const tagtask = await this.tagtaskRepository.findOne(uuid)
-      const tagtaskWithOutPassword = this.quitPassword(tagtask)
-      return tagtaskWithOutPassword
-    } catch (e) {
-      return e
-    }
-  }
-
-  gettagtaskPasswordHash = async (uuid) => {
-    try {
-      const tagtask = await this.tagtaskRepository.findOne(uuid)
-      const { password } = tagtask
-      return password
+      const isTagTaskDeleted = await this.tagtaskRepository.deleteOne(uuid)
+      if (isTagTaskDeleted)
+        return {
+          Message: 'Se Borro Correctamente la Tag con datos : ',
+          tagtask
+        }
     } catch (error) {
-      return error
+      return new Error('No se logro Quitar la Etiqueta a La Tarea')
     }
   }
 
-  gettagtasks = async (params) => {
-    const tagtasks = await this.tagtaskRepository.getAll(params)
-    if (tagtasks && tagtasks.length > 0) {
-      const tagtasksWithoutPassword = tagtasks.map((e) => this.quitPassword(e))
-      return tagtasksWithoutPassword
-    }
-    return tagtasks
-  }
-
-  updatetagtask = async (fields) => {
+  getTagsofATasks = async (uuidTask) => {
     try {
-      const { uuid, password, ...fieldtoUpdate } = fields
-      if (password) {
-        const passwordHash = await this.passwordUtils.genetareHashPassword(
-          password
-        )
-        fieldtoUpdate.password = passwordHash
+      const tagtasks = await this.tagtaskRepository.getAll(uuidTask)
+      if (Array.isArray(tagtasks) && tagtasks.length > 0) {
+        return { Total: tagtasks.length, tagtasks }
       }
-      const uuidUpdated = await this.tagtaskRepository.updateOne(
-        uuid,
-        fieldtoUpdate
-      )
-      if (uuidUpdated === uuid) {
-        const tagtaskUpdated = await this.findtagtask(uuidUpdated)
-        return tagtaskUpdated
-      }
-      return uuidUpdated
+      return new Error('No hay Etiquedas para Mostrar')
     } catch (error) {
-      return error
+      console.log(error)
+      return new Error('Error Desconocido')
     }
   }
 }
