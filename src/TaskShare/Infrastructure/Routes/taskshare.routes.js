@@ -4,7 +4,7 @@ import { TaskShareController } from '../Controllers/taskshare.controller.js'
 import { MySQLTaskShareRepository } from '../Repository/taskshare.mysql.repository.js'
 import { userUseCases } from '../../../User/Infrastructure/Routes/user.routes.js'
 import { taskUseCases } from '../../../Task/Infraestructure/Routes/task.routes.js'
-// import { MocktaskshareRepository } from '../Repository/taskshare.mock.respository.js'
+
 // Crear instancia del repositorio de MySQL para usuarios
 const taskshareRepository = new MySQLTaskShareRepository()
 
@@ -22,11 +22,39 @@ const taskshareController = new TaskShareController(taskshareUseCases)
 const taskshareRouter = Router()
 
 // Definir rutas de usuarios y asignar los métodos del controlador
-taskshareRouter.get('/', taskshareController.getAll) // Obtener todos los usuarios
-taskshareRouter.get('/search?', taskshareController.getAll) // Obtener un Tareas compartidas por Query Parameters
-taskshareRouter.post('/', taskshareController.createOne) // Crear un nuevo usuario
-taskshareRouter.patch('/', taskshareController.updateOne) // Actualizar un usuario
-taskshareRouter.delete('/:id', taskshareController.deleteOne) // Eliminar un usuario por su UUID
 
-// Exportar el router de usuarios
+/**
+ * Obtener todos los usuarios compartiendo tareas
+ * Ruta: GET '/'
+ */
+
+taskshareRouter.get('/tasks', taskshareController.getAll)
+
+taskshareRouter.get('/tasks/:id', taskshareController.getAllUsersShared)
+
+/**
+ * Obtener tareas compartidas por parámetros de consulta
+ * Ruta: GET '/search?'
+ */
+taskshareRouter.get('/search?', taskshareController.getAll)
+
+/**
+ * Compartir una nueva tarea
+ * Ruta: POST '/'
+ */
+taskshareRouter.post('/', taskshareController.shareTask)
+
+/**
+ * Actualizar una tarea compartida
+ * Ruta: PATCH '/'
+ */
+taskshareRouter.patch('/', taskshareController.updateOne)
+
+/**
+ * Eliminar una tarea compartida por su ID
+ * Ruta: DELETE '/:id'
+ */
+taskshareRouter.delete('/:id', taskshareController.deleteOne)
+
+// Exportar el router de Tareas Compartidas
 export default taskshareRouter

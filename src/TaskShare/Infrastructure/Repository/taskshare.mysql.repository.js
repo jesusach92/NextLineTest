@@ -7,66 +7,90 @@ export class MySQLTaskShareRepository {
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async (params) => {
+  getAllTasksIDS = async (params) => {
     try {
-      const queryUtils = new MySQLUtils('taskshared')
-      const query = queryUtils.execute(params)
       const db = await this.MySQL.createConnection()
-      const [taskshares] = await db.query('SELECT * FROM taskshared;')
+      const [taskshared] = await db.query(
+        'SELECT DISTINCT TaskID, taskUUID from taskshared'
+      )
       db.end()
-      return taskshares
+      return taskshared
     } catch (e) {
-      throw new Error('Error Desconocido')
+      return Error('Error Desconocido')
     }
   }
 
-  findOne = async (uuid) => {
+  getOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[taskshare]] = await db.query(
-        'SELECT * FROM taskshares WHERE uuid= ?;',
+      const [[taskShared]] = await db.query(
+        'SELECT * FROM taskshared WHERE uuid = ?',
         [uuid]
       )
-      await db.end()
-      if (!taskshare) {
-        throw new Error('Usuario no Encontrado')
-      }
-      return taskshare
+      return taskShared
     } catch (error) {
-      return error
+      return new Error('Error Inesperado')
     }
   }
 
-  createOne = async (taskshare) => {
-    console.log(taskshare)
+  getByTask = async (id) => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const [usersShared] = await db.query(
+        'SELECT * FROM tasksharedview WHERE taskID = ?',
+        [id]
+      )
+      db.end()
+      return usersShared
+    } catch (error) {
+      return new Error('Error Desconocido')
+    }
+  }
+
+  getByUser = async (id) => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const usersShared = await db.query(
+        'SELECT * FROM tasksharedview WHERE sharedUserID = ?',
+        [id]
+      )
+      db.end()
+      return usersShared
+    } catch (error) {
+      return new Error('Error Desconocido')
+    }
+  }
+
+  createOne = async (taskshareEntity) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
         'INSERT INTO taskshared SET ?;',
-        [taskshare]
+        [taskshareEntity]
       )
       await db.end()
-      if (ResultSetHeader || ResultSetHeader.insertId === 0) {
-        throw new Error('Usuario no Creado')
+      if (!ResultSetHeader && ResultSetHeader.insertId === 0) {
+        return new Error('Tarea no Compartida')
       }
-      return taskshare
+      return taskshareEntity
     } catch (error) {
-      throw new Error(error.sqlMessage)
+      return new Error(error.sqlMessage)
     }
   }
 
-  updateOne = async (uuid, fieldToUpdate) => {
+  updateOne = async (id, responsible) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'UPDATE taskshares SET ? WHERE uuid = ?',
-        [fieldToUpdate, uuid]
+        'UPDATE taskshared SET responsible = ? WHERE id = ?',
+        [responsible, id]
       )
       await db.end()
+
       if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se pudo Actualizar')
+        return new Error('No se pudo Actualizar')
       }
-      return uuid
+      return id
     } catch (error) {
       console.log(error)
       return new Error('Error Inesperado')
@@ -77,12 +101,12 @@ export class MySQLTaskShareRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM taskshares WHERE uuid=?',
+        'DELETE FROM taskshared WHERE uuid=?',
         [uuid]
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se pudo borrar')
+        return new Error('No se pudo borrar')
       }
       return uuid
     } catch (error) {
