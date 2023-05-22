@@ -37,29 +37,29 @@ export class authenticationUseCases {
     }
   }
 
-  validateSession = async (uuid) => {
-    try {
-      const authentication = await this.authenticationRepository.findOne(uuid)
-      const isauthenticationDeleted =
-        await this.authenticationRepository.deleteOne(uuid)
-      if (isauthenticationDeleted)
-        return {
-          Message: 'Se Borro Correctamente la authentication con datos : ',
-          authentication
-        }
-    } catch (error) {
-      console.log(error)
-      return new Error('No se logro Borrar la Etiqueda')
-    }
+  validateSession = async (token) => {
+    // try {
+    //   const authentication = await this.authenticationRepository.findOne(token)
+    //   const isauthenticationDeleted =
+    //     await this.authenticationRepository.deleteOne(token)
+    //   if (isauthenticationDeleted)
+    //     return {
+    //       Message: 'Se Borro Correctamente la authentication con datos : ',
+    //       authentication
+    //     }
+    // } catch (error) {
+    //   console.log(error)
+    //   return new Error('No se logro Borrar la Etiqueda')
+    // }
   }
 
   deleteSession = async (uuid) => {
-    try {
-      const authentication = await this.authenticationRepository.findOne(uuid)
-      return authentication
-    } catch (error) {
-      console.log(error)
-      return new Error('No se Logro Encontrar la Etiqueta')
-    }
+    // try {
+    //   const authentication = await this.authenticationRepository.findOne(uuid)
+    //   return authentication
+    // } catch (error) {
+    //   console.log(error)
+    //   return new Error('No se Logro Encontrar la Etiqueta')
+    // }
   }
 }
