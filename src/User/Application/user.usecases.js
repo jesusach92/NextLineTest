@@ -63,6 +63,15 @@ export class UserUseCases {
     }
   }
 
+  findUserByEmail = async (email) => {
+    try {
+      const user = await this.serRepository.findUserByEmail(email)
+      return user
+    } catch (error) {
+      throw new Error('No se Encontro el Usuario')
+    }
+  }
+
   getUserPasswordHash = async (uuid) => {
     try {
       const user = await this.UserRepository.findOne(uuid)

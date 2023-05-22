@@ -1,7 +1,7 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class MySQLTagTaskRepository {
+export class MySQLtagtaskRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
@@ -11,7 +11,7 @@ export class MySQLTagTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [tagtasks] = await db.query(
-        'SELECT * FROM tasktags WHERE taskUUID;'
+        'SELECT * FROM tagtasks WHERE taskUUID;'
       )
       db.end()
       return tagtasks
@@ -24,7 +24,7 @@ export class MySQLTagTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [[tagtask]] = await db.query(
-        'SELECT * FROM tasktags WHERE uuid= ?;',
+        'SELECT * FROM tagtasks WHERE uuid= ?;',
         [uuid]
       )
       await db.end()
@@ -57,7 +57,7 @@ export class MySQLTagTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM tasktags WHERE uuid=?',
+        'DELETE FROM tagtasktags WHERE uuid=?',
         [uuid]
       )
       await db.end()
