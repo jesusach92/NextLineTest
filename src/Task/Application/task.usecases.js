@@ -37,14 +37,13 @@ export class TaskUseCases {
         dueDate,
         sharedWith = null,
         comments = null,
-        createdBy,
+        userUUID,
         responsible = null,
         tags = null,
         file = null
       } = data
       const uuid = this.uuidUtils.generate()
-      const { id } = await this.userUsesCase.findUser(createdBy)
-
+      const { id } = await this.userUsesCase.findUser(userUUID)
       const Task = new TaskEntity({
         uuid,
         title,
@@ -55,10 +54,9 @@ export class TaskUseCases {
         createdBy: id
       })
       const newTask = await this.taskRepository.createOne(Task.generateTask())
-
-      return { ...newTask, createdBy }
+      return { ...newTask, userUUID }
     } catch (error) {
-      return error
+      return new Error('No se pudo Crear La Tarea')
     }
   }
 

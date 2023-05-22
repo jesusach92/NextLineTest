@@ -21,7 +21,7 @@ export class UserUseCases {
 
   createUser = async (data) => {
     try {
-      const { name, email, password, userType } = data
+      const { name, email, password, userType = 'User' } = data
       const uuid = this.uuidUtils.generate()
       const passwordHash = await this.passwordUtils.genetareHashPassword(
         password
@@ -65,7 +65,7 @@ export class UserUseCases {
 
   findUserByEmail = async (email) => {
     try {
-      const user = await this.serRepository.findUserByEmail(email)
+      const user = await this.UserRepository.findUserByEmail(email)
       return user
     } catch (error) {
       throw new Error('No se Encontro el Usuario')

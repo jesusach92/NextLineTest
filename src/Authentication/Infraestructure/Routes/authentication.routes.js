@@ -27,7 +27,7 @@ const authenticationRouter = Router()
 authenticationRouter.post('/', authenticationController.logIn)
 // Ruta para iniciar sesión
 
-authenticationRouter.delete('/:id', authenticationController.logOut)
+authenticationRouter.delete('/', authenticationController.logOut)
 // Ruta para cerrar sesión de un usuario por su UUID
 
 // Exportar el router de autenticación

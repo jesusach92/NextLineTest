@@ -6,25 +6,24 @@ export class TokenUtil {
     try {
       const token = jwt.sign(
         {
-          TokenSessionEntity
+          ...TokenSessionEntity
         },
         process.env.PASS_JWT,
         {
-          expiresIn: '1h'
+          expiresIn: '150h'
         }
       )
       return token
     } catch (error) {
-      console.log(error)
-      throw new Error('No se logro generar Token')
+      return new Error('No se logro generar Token')
     }
   }
 
-  verifytoken = async (token) => {
+  verifytoken = async ({ token }) => {
     try {
       return jwt.verify(token, process.env.PASS_JWT)
     } catch (e) {
-      throw new Error('Error Inesperado')
+      return new Error('Error Inesperado')
     }
   }
 }

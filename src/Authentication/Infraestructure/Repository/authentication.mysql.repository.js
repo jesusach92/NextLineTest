@@ -1,51 +1,39 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class MySQLtagtaskRepository {
+export class MySQLAuthenticationRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async (uuidTask) => {
+  findOne = async (token) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [tagtasks] = await db.query(
-        'SELECT * FROM tagtasks WHERE taskUUID;'
-      )
-      db.end()
-      return tagtasks
-    } catch (e) {
-      throw new Error(e.sqlMessage)
-    }
-  }
-
-  findOne = async (uuid) => {
-    try {
-      const db = await this.MySQL.createConnection()
-      const [[tagtask]] = await db.query(
-        'SELECT * FROM tagtasks WHERE uuid= ?;',
-        [uuid]
+      const [[tokenValid]] = await db.query(
+        'SELECT * FROM tokensvalid WHERE token= ?;',
+        [token]
       )
       await db.end()
-      if (!tagtask) {
-        throw new Error('Tag no Encontrada')
+      if (!tokenValid) {
+        throw new Error('Token no Encontrado')
       }
-      return tagtask
+      return tokenValid
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
   }
 
-  createOne = async (tagtask) => {
+  createOne = async (token) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query('INSERT INTO tasktags SET ?;', [
-        tagtask
-      ])
+      const [ResultSetHeader] = await db.query(
+        'INSERT INTO tokensvalid SET ?;',
+        [token]
+      )
       await db.end()
       if (ResultSetHeader && ResultSetHeader.insertId === 0) {
-        throw new Error('Tag no Asignada')
+        throw new Error('Token no Guardado')
       }
       return true
     } catch (error) {
@@ -53,20 +41,20 @@ export class MySQLtagtaskRepository {
     }
   }
 
-  deleteOne = async (uuid) => {
+  deleteOne = async (token) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM tagtasktags WHERE uuid=?',
-        [uuid]
+        'DELETE FROM tokensvalid WHERE token=?',
+        [token]
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se pudo borrar')
+        throw new Error('No se pudo borrar el Token')
       }
-      return uuid
+      return token
     } catch (error) {
-      return error
+      throw new Error()
     }
   }
 }

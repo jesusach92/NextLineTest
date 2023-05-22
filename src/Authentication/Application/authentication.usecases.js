@@ -3,9 +3,8 @@ import TokenSessionEntity from '../../TokenSession/Domain/tokensession.entity.js
 import 'dotenv/config.js'
 import { TokenUtil } from '../../Shared/Infrastructure/utils/token.util.js'
 import { PasswordUtil } from '../../Shared/Infrastructure/utils/password.util.js'
-let intentos = 0
 
-export class authenticationUseCases {
+export class AuthenticationUseCases {
   constructor(authenticationRepository, userUseCases) {
     this.authenticationRepository = authenticationRepository
     this.userUseCases = userUseCases
@@ -22,44 +21,60 @@ export class authenticationUseCases {
         user.password
       )
       if (passwordValidate) {
-        const tokenSessionEntity = new TokenSessionEntity(user.uuid)
+        const tokenSessionEntity = new TokenSessionEntity(
+          user.uuid,
+          user.userType
+        )
         const token = await this.tokenUtil.creteToken(
           tokenSessionEntity.generateTokenSessionEntity()
         )
         const authenticationEntity = new AuthenticationEntity(token)
+        await this.authenticationRepository.createOne(
+          authenticationEntity.generateSessionEntity()
+        )
         return authenticationEntity.generateSessionEntity()
       }
-      intentos += 1
-      throw new Error(`Password Invalido Intento ${intentos}`)
+      return new Error(`Valida tus Credenciales`)
     } catch (error) {
-      console.log(error)
-      return new Error('No se logro crear la etiqueta')
+      return new Error('No se logro crear la sesion')
     }
   }
 
   validateSession = async (token) => {
-    // try {
-    //   const authentication = await this.authenticationRepository.findOne(token)
-    //   const isauthenticationDeleted =
-    //     await this.authenticationRepository.deleteOne(token)
-    //   if (isauthenticationDeleted)
-    //     return {
-    //       Message: 'Se Borro Correctamente la authentication con datos : ',
-    //       authentication
-    //     }
-    // } catch (error) {
-    //   console.log(error)
-    //   return new Error('No se logro Borrar la Etiqueda')
-    // }
+    try {
+      const tokeClean = token.split(' ')[1]
+      const tokenSession = await this.authenticationRepository.findOne(
+        tokeClean
+      )
+      const decodeToken = await this.tokenUtil.verifytoken(tokenSession)
+      if (decodeToken instanceof Error) {
+        await this.authenticationRepository.deleteOne(tokeClean)
+        return new Error('No cuentas con una sesion valida')
+      }
+      const userSession = {
+        userUUID: decodeToken.userUUID,
+        userType: decodeToken.userType
+      }
+      return userSession
+    } catch (error) {
+      return new Error('No cuentas con una sesion valida')
+    }
   }
 
-  deleteSession = async (uuid) => {
-    // try {
-    //   const authentication = await this.authenticationRepository.findOne(uuid)
-    //   return authentication
-    // } catch (error) {
-    //   console.log(error)
-    //   return new Error('No se Logro Encontrar la Etiqueta')
-    // }
+  deleteSession = async (token) => {
+    try {
+      const tokeClean = token.split(' ')[1]
+      const authentication = await this.authenticationRepository.findOne(
+        tokeClean
+      )
+      if (authentication) {
+        await this.authenticationRepository.deleteOne(tokeClean)
+        return {
+          Message: 'Se Cerro correctamente la Sesion'
+        }
+      }
+    } catch (error) {
+      return new Error('No se cerrar la sesion')
+    }
   }
 }

@@ -10,7 +10,7 @@ const userRepository = new MySQLUserRepository()
 export const userUseCases = new UserUseCases(userRepository)
 
 // Crear instancia del controlador y pasar los casos de uso como dependencia
-const userController = new UserController(userUseCases)
+export const userController = new UserController(userUseCases)
 
 // Crear instancia del router de usuarios
 const userRouter = Router()

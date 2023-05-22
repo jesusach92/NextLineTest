@@ -18,6 +18,10 @@ export class AuthenticationController {
     )
     if (isValidSession instanceof Error)
       return res.status(403).json('No tienes una sesion valida')
+    req.userSession = {
+      userUUID: isValidSession.userUUID,
+      userType: isValidSession.userType
+    }
     next()
   }
 
