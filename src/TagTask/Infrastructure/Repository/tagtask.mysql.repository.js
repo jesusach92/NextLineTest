@@ -1,7 +1,7 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class MySQLTaskRepository {
+export class MySQLUserRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
@@ -10,9 +10,9 @@ export class MySQLTaskRepository {
   getAll = async (params) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [tasks] = await db.query('SELECT * FROM tasks;')
+      const [users] = await db.query('SELECT * FROM users;')
       db.end()
-      return tasks
+      return users
     } catch (e) {
       throw new Error('Error Desconocido')
     }
@@ -21,30 +21,30 @@ export class MySQLTaskRepository {
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[task]] = await db.query('SELECT * FROM tasks WHERE uuid= ?;', [
+      const [[user]] = await db.query('SELECT * FROM users WHERE uuid= ?;', [
         uuid
       ])
       await db.end()
-      if (!task) {
-        throw new Error('Tarea no Encontrada')
+      if (!user) {
+        throw new Error('Usuario no Encontrado')
       }
-      return task
+      return user
     } catch (error) {
       return error
     }
   }
 
-  createOne = async (task) => {
+  createOne = async (user) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query('INSERT INTO tasks SET ?;', [
-        task
+      const [ResultSetHeader] = await db.query('INSERT INTO users SET ?;', [
+        user
       ])
       await db.end()
-      if (!task) {
-        throw new Error('Tarea no Creada')
+      if (ResultSetHeader && ResultSetHeader.insertId === 0) {
+        throw new Error('Usuario no Creado')
       }
-      return { id: ResultSetHeader.insertId, ...task }
+      return user
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
@@ -54,7 +54,7 @@ export class MySQLTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'UPDATE tasks SET ? WHERE uuid = ?',
+        'UPDATE users SET ? WHERE uuid = ?',
         [fieldToUpdate, uuid]
       )
       await db.end()
@@ -71,7 +71,7 @@ export class MySQLTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM tasks WHERE uuid=?',
+        'DELETE FROM users WHERE uuid=?',
         [uuid]
       )
       await db.end()

@@ -1,7 +1,7 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class MySQLTaskRepository {
+export class MySQLTagRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
@@ -10,60 +10,58 @@ export class MySQLTaskRepository {
   getAll = async (params) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [tasks] = await db.query('SELECT * FROM tasks;')
+      const [tags] = await db.query('SELECT * FROM tags;')
       db.end()
-      return tasks
-    } catch (e) {
-      throw new Error('Error Desconocido')
+      return tags
+    } catch (error) {
+      throw new Error(error.sqlMessage)
     }
   }
 
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[task]] = await db.query('SELECT * FROM tasks WHERE uuid= ?;', [
+      const [[tag]] = await db.query('SELECT * FROM tags WHERE uuid= ?;', [
         uuid
       ])
       await db.end()
-      if (!task) {
-        throw new Error('Tarea no Encontrada')
+      if (!tag) {
+        throw new Error('Tag no Encontrada')
       }
-      return task
-    } catch (error) {
-      return error
-    }
-  }
-
-  createOne = async (task) => {
-    try {
-      const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query('INSERT INTO tasks SET ?;', [
-        task
-      ])
-      await db.end()
-      if (!task) {
-        throw new Error('Tarea no Creada')
-      }
-      return { id: ResultSetHeader.insertId, ...task }
+      return tag
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
   }
 
-  updateOne = async (uuid, fieldToUpdate) => {
+  createOne = async (tag) => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const [ResultSetHeader] = await db.query('INSERT INTO tags SET ?;', [tag])
+      await db.end()
+      if (ResultSetHeader && ResultSetHeader.insertId === 0) {
+        throw new Error('Tag no Creada')
+      }
+      return true
+    } catch (error) {
+      throw new Error(error.sqlMessage)
+    }
+  }
+
+  updateOne = async (uuid, tag) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'UPDATE tasks SET ? WHERE uuid = ?',
-        [fieldToUpdate, uuid]
+        'UPDATE tags SET tag= ? WHERE uuid = ?',
+        [tag, uuid]
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo Actualizar')
       }
-      return uuid
+      return true
     } catch (error) {
-      return new Error('Error Inesperado')
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -71,16 +69,16 @@ export class MySQLTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM tasks WHERE uuid=?',
+        'DELETE FROM tags WHERE uuid=?',
         [uuid]
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se pudo borrar')
+        throw new Error('No se encontro Etiqueta para Borrar')
       }
       return uuid
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 }
