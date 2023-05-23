@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
 -- Host: localhost    Database: tasks
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.33
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -33,7 +33,7 @@ CREATE TABLE `tasks` (
   `createdBy` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fkUser` (`createdBy`),
-  CONSTRAINT `fkUser` FOREIGN KEY (`createdBy`) REFERENCES `users` (`id`)
+  CONSTRAINT `fkUser` FOREIGN KEY (`createdBy`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -43,7 +43,6 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (1,'c20957dc-7bcb-4ed1-a6d4-537f290faf5e','Otra Tarea de Prueba','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1),(2,'6e9c780c-c88c-4135-9fbf-0c5f29a06d82','Es una Tarea de Prueba','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1),(3,'64ef1344-08d5-48b3-a394-6ce61e67d87b','Es una Tarea de Prueba 2','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1),(4,'bff9ed80-738c-4383-95fb-de8a6d196547','Es una Tarea de Prueba 3','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1);
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-22 17:46:03
+-- Dump completed on 2023-05-22 22:34:25

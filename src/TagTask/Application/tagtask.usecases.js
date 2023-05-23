@@ -19,7 +19,6 @@ export class TagTaskUseCases {
       const uuid = this.uuidUtils.generate()
       const task = await this.taskUseCases.findTask(taskUUID)
       const tag = await this.tasgsUseCases.findTag(tagUUID)
-      console.log(tag)
       const tagtaskEntity = new TagTaskEntity(
         uuid,
         task.id,
@@ -27,12 +26,11 @@ export class TagTaskUseCases {
         tag.id,
         tagUUID
       )
-      const tagtask = await this.tagtaskRepository.createOne(
+       await this.tagtaskRepository.createOne(
         tagtaskEntity.generatetagtask()
       )
-      if (tagtask) return tagtaskEntity.generatetagtask()
+      return tagtaskEntity.generatetagtask()
     } catch (error) {
-      console.log(error)
       return new Error('No se pudo Agregar la Etiquea a la Tarea')
     }
   }

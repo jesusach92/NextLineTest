@@ -10,11 +10,15 @@ export const taskUseCases = new TaskUseCases(taskRepository, userUseCases)
 const taskController = new TaskController(taskUseCases)
 
 const taskRouter = Router()
-taskRouter.get('/', taskController.getAll)
-taskRouter.get('/search?', taskController.getAll)
-taskRouter.get('/:id', taskController.getOne)
-taskRouter.post('/', taskController.createOne)
-taskRouter.patch('/', taskController.updateOne)
-taskRouter.delete('/:id', taskController.deleteOne)
+taskRouter.get('/', taskController.getTasks, taskController.tasksPonderated)
+taskRouter.get('/search?', taskController.tasksPonderated)
+taskRouter.get('/:id', taskController.getTask)
+taskRouter.post(
+  '/',
+  taskController.createTask,
+  taskController.returnCreatedFullTask
+)
+taskRouter.patch('/:id', taskController.updateTask)
+taskRouter.delete('/:id', taskController.deleteTask)
 
 export default taskRouter

@@ -11,7 +11,7 @@ export class TaskEntity {
     this.uuid = uuid
     this.title = title
     this.description = description
-    this.status = status
+    this.status = status = 'PENDING'
     this.isPublic = isPublic
     this.createdBy = createdBy
     this.dueDate = dueDate

@@ -3,37 +3,65 @@ export class TaskController {
     this.taskUseCases = taskUseCases
   }
 
-  getAll = async (req, res) => {
+  getTasks = async (req, res, next) => {
+    const userSession = req.userSession
+    if (userSession.userType === 'User') {
+      const tasks = await this.taskUseCases.getPublicTasks()
+      if (tasks instanceof Error) return res.status(400).json(tasks.message)
+      return res.status(200).json(tasks)
+    }
     const tasks = await this.taskUseCases.getTasks(req.query)
-
-    return res.status(200).json(tasks)
+    if (tasks instanceof Error) return res.status(400).json(tasks.message)
+    req.tasks = tasks
+    next()
+    // return res.status(200).json(tasks)
   }
 
-  getOne = async (req, res) => {
+  tasksPonderated = async (req, res) => {
+    const tasks = req.tasks
+    if (tasks instanceof Error) return res.status(400).json(tasks.message)
+    res.status(200).json(tasks)
+  }
+
+  getTask = async (req, res) => {
     const task = await this.taskUseCases.findTask(req.params.id)
+    if (task instanceof Error) return res.status(400).json(task.message)
     return res.status(200).json(task)
   }
 
-  createOne = async (req, res) => {
+  createTask = async (req, res, next) => {
     const task = await this.taskUseCases.createTask({
       ...req.body,
-      ...req.userSession,
-      file: req?.files?.file ?? null
+      ...req.userSession
     })
     if (task instanceof Error) return res.status(400).json(task.message)
-    return res.status(201).json(task)
+    req.task = task
+    next()
+    // return res.status(201).json(task)
   }
 
-  deleteOne = async (req, res) => {
-    const taskuuidDeleted = await this.taskUseCases.deleteTask(req.params.id)
-    return res.status(200).json(taskuuidDeleted)
+  returnCreatedFullTask = async (req, res) => {
+    const task = req.task
+    if (task instanceof Error) res.status(400).json(task.message)
+    res.status(201).json(task)
   }
 
-  updateOne = async (req, res) => {
-    const updatedtask = await this.taskUseCases.updateTask({
-      ...req.body,
-      file: req.files.file
+  deleteTask = async (req, res) => {
+    const taskDeleted = await this.taskUseCases.deleteTask(req.params.id)
+    if (taskDeleted instanceof Error)
+      return res.status(400).json(taskDeleted.message)
+    return res
+      .status(200)
+      .json({ Message: 'Tarea Borrada Exitosamente', task: taskDeleted })
+  }
+
+  updateTask = async (req, res) => {
+    const taskUpdated = await this.taskUseCases.updateTask({
+      uuid: req.params.id,
+      ...req.body
     })
-    return res.status(200).json(updatedtask)
+    if (taskUpdated instanceof Error)
+      return res.status(400).json(taskUpdated.message)
+    return res.status(200).json(taskUpdated)
   }
 }
