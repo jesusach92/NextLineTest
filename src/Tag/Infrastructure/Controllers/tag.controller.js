@@ -4,6 +4,7 @@ export class TagController {
   }
 
   getTags = async (req, res) => {
+    console.log(req.userSession)
     const tags = await this.tagUseCases.getTags(req.query)
     return res.status(200).json(tags)
   }

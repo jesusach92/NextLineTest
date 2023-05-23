@@ -30,7 +30,7 @@ export class MySQLTaskRepository {
       }
       return task
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -80,7 +80,7 @@ export class MySQLTaskRepository {
       }
       return uuid
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 }

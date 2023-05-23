@@ -4,7 +4,7 @@ import 'dotenv/config.js'
 import { PasswordUtil } from '../../Shared/Infrastructure/utils/password.util.js'
 import { UUIDUtils } from '../../Shared/Infrastructure/utils/uuids.util.js'
 
-export class tagtaskUseCases {
+export class TagTaskUseCases {
   constructor(tagtaskRepository, taskUseCases, tasgsUseCases) {
     this.tagtaskRepository = tagtaskRepository
     this.taskUseCases = taskUseCases
@@ -17,8 +17,9 @@ export class tagtaskUseCases {
     try {
       const { taskUUID, tagUUID } = data
       const uuid = this.uuidUtils.generate()
-      const task = this.taskUseCases.findTask(taskUUID)
-      const tag = this.tasgsUseCases.findTag(tagUUID)
+      const task = await this.taskUseCases.findTask(taskUUID)
+      const tag = await this.tasgsUseCases.findTag(tagUUID)
+      console.log(tag)
       const tagtaskEntity = new TagTaskEntity(
         uuid,
         task.id,
@@ -29,8 +30,9 @@ export class tagtaskUseCases {
       const tagtask = await this.tagtaskRepository.createOne(
         tagtaskEntity.generatetagtask()
       )
-      if (tagtask) return tagtaskEntity.generateTag()
+      if (tagtask) return tagtaskEntity.generatetagtask()
     } catch (error) {
+      console.log(error)
       return new Error('No se pudo Agregar la Etiquea a la Tarea')
     }
   }

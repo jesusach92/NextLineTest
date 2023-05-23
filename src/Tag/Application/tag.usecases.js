@@ -1,14 +1,11 @@
 import TagEntity from '../Domain/tag.entity.js'
-
 import 'dotenv/config.js'
-import { PasswordUtil } from '../../Shared/Infrastructure/utils/password.util.js'
 import { UUIDUtils } from '../../Shared/Infrastructure/utils/uuids.util.js'
 
 export class TagUseCases {
   constructor(tagRepository) {
     this.tagRepository = tagRepository
     this.uuidUtils = new UUIDUtils()
-    this.passwordUtils = new PasswordUtil()
   }
 
   createTag = async (data) => {

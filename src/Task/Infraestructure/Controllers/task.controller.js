@@ -15,11 +15,14 @@ export class TaskController {
   }
 
   createOne = async (req, res) => {
-    const taskuuid = await this.taskUseCases.createTask({
+    const task = await this.taskUseCases.createTask({
       ...req.body,
-      file: req.files.file
+      ...req.userSession,
+      file: req?.files?.file ?? null
     })
-    return res.status(201).json(taskuuid)
+    if (task instanceof Error)
+      return res.status(400).json('No se Creo La Tarea')
+    return res.status(201).json(task)
   }
 
   deleteOne = async (req, res) => {

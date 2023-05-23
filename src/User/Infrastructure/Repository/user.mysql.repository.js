@@ -34,6 +34,22 @@ export class MySQLUserRepository {
     }
   }
 
+  findUserByEmail = async (email) => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const [[user]] = await db.query('SELECT * FROM users WHERE email= ?;', [
+        email
+      ])
+      await db.end()
+      if (!user) {
+        throw new Error('Usuario no Encontrado')
+      }
+      return user
+    } catch (error) {
+      return error
+    }
+  }
+
   createOne = async (user) => {
     try {
       const db = await this.MySQL.createConnection()

@@ -4,11 +4,11 @@ export class TagTaskController {
   }
 
   getTagsTask = async (req, res) => {
-    const tagtasks = await this.tagtaskUseCases.getTagsofATasks(req.paramsm.id)
+    const tagtasks = await this.tagtaskUseCases.getTagsofATasks(req.params.id)
     if (tagtasks instanceof Error)
-      return res
-        .status(404)
-        .json('No se encontrar Etiquetas de la Tarea : ', req.params.id)
+      return res.status(404).json({
+        Message: `No se encontraron Etiquetas de la Tarea :  ${req.params.id}`
+      })
     return res.status(200).json(tagtasks)
   }
 

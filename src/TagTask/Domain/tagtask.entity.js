@@ -3,17 +3,17 @@ export default class TagTaskEntity {
     this.uuid = uuid
     this.taskID = taskID
     this.taskUUID = taskUUID
-    this.taskID = tagID
+    this.tagID = tagID
     this.tagUUID = tagUUID
   }
 
   generatetagtask = () => {
     const TagTask = {
-      name: this.name,
-      email: this.email,
-      tagtaskType: this.tagtaskType,
-      password: this.password,
-      uuid: this.uuid
+      uuid: this.uuid,
+      taskID: this.taskID,
+      taskUUID: this.tagUUID,
+      tagID: this.tagID,
+      tagUUID: this.tagUUID
     }
     return Object.freeze(TagTask)
   }

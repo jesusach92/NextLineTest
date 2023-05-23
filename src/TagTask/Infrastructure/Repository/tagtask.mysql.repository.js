@@ -1,20 +1,22 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
-export class MySQLtagtaskRepository {
+export class MySQLTagTaskRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async (params) => {
+  getAll = async (uuidTask) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [tagtasks] = await db.query('SELECT * FROM tagtasks;')
+      const [tagtasks] = await db.query(
+        'SELECT * FROM tasktags WHERE taskUUID;'
+      )
       db.end()
       return tagtasks
     } catch (e) {
-      throw new Error('Error Desconocido')
+      throw new Error(e.sqlMessage)
     }
   }
 
@@ -22,16 +24,16 @@ export class MySQLtagtaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [[tagtask]] = await db.query(
-        'SELECT * FROM tagtasks WHERE uuid= ?;',
+        'SELECT * FROM tasktags WHERE uuid= ?;',
         [uuid]
       )
       await db.end()
       if (!tagtask) {
-        throw new Error('Usuario no Encontrado')
+        throw new Error('Tag no Encontrada')
       }
       return tagtask
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -43,28 +45,11 @@ export class MySQLtagtaskRepository {
       ])
       await db.end()
       if (ResultSetHeader && ResultSetHeader.insertId === 0) {
-        throw new Error('Usuario no Creado')
+        throw new Error('Tag no Asignada')
       }
-      return tagtask
+      return true
     } catch (error) {
       throw new Error(error.sqlMessage)
-    }
-  }
-
-  updateOne = async (uuid, fieldToUpdate) => {
-    try {
-      const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query(
-        'UPDATE tasktag SET ? WHERE uuid = ?',
-        [fieldToUpdate, uuid]
-      )
-      await db.end()
-      if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se pudo Actualizar')
-      }
-      return uuid
-    } catch (error) {
-      return new Error('Error Inesperado')
     }
   }
 
@@ -72,7 +57,7 @@ export class MySQLtagtaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM tagtasktags WHERE uuid=?',
+        'DELETE FROM tasktags WHERE uuid=?',
         [uuid]
       )
       await db.end()
