@@ -1,4 +1,4 @@
-export class TaskEntity {
+export class FileEntity {
   constructor({
     uuid,
     title,
@@ -11,7 +11,7 @@ export class TaskEntity {
     this.uuid = uuid
     this.title = title
     this.description = description
-    this.status = status = 'PENDING'
+    this.status = status
     this.isPublic = isPublic
     this.createdBy = createdBy
     this.dueDate = dueDate

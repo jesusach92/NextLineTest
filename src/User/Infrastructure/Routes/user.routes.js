@@ -10,7 +10,7 @@ const userRepository = new MySQLUserRepository()
 export const userUseCases = new UserUseCases(userRepository)
 
 // Crear instancia del controlador y pasar los casos de uso como dependencia
-const userController = new UserController(userUseCases)
+export const userController = new UserController(userUseCases)
 
 // Crear instancia del router de usuarios
 const userRouter = Router()
@@ -19,7 +19,7 @@ const userRouter = Router()
 userRouter.get('/', userController.getAll) // Obtener todos los usuarios
 userRouter.get('/:id', userController.getOne) // Obtener un usuario por su UUID
 userRouter.post('/', userController.createOne) // Crear un nuevo usuario
-userRouter.patch('/', userController.updateOne) // Actualizar un usuario
+userRouter.patch('/:id', userController.updateOne) // Actualizar un usuario
 userRouter.delete('/:id', userController.deleteOne) // Eliminar un usuario por su UUID
 
 // Exportar el router de usuarios

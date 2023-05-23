@@ -13,10 +13,8 @@ export class TagUseCases {
       const { tag } = data
       const uuid = this.uuidUtils.generate()
       const tagEntity = new TagEntity(uuid, tag)
-      const istagCreted = await this.tagRepository.createOne(
-        tagEntity.generateTag()
-      )
-      if (istagCreted) return tagEntity.generateTag()
+      await this.tagRepository.createOne(tagEntity.generateTag())
+      return tagEntity.generateTag()
     } catch (error) {
       console.log(error)
       return new Error('No se logro crear la etiqueta')
@@ -26,9 +24,8 @@ export class TagUseCases {
   deleteTag = async (uuid) => {
     try {
       const tag = await this.tagRepository.findOne(uuid)
-      const isTagDeleted = await this.tagRepository.deleteOne(uuid)
-      if (isTagDeleted)
-        return { Message: 'Se Borro Correctamente la Tag con datos : ', tag }
+      await this.tagRepository.deleteOne(uuid)
+      return { Message: 'Se Borro Correctamente la Tag con datos : ', tag }
     } catch (error) {
       console.log(error)
       return new Error('No se logro Borrar la Etiqueda')
@@ -60,14 +57,12 @@ export class TagUseCases {
   updateTag = async (fields) => {
     try {
       const { uuid, tag } = fields
-      const isTagUpdated = await this.tagRepository.updateOne(uuid, tag)
-      if (isTagUpdated) {
-        return fields
-      }
-      return new Error('No se logro Actualizar la Etiqueda')
+      await this.tagRepository.updateOne(uuid, tag)
+      const tagUpdated = await this.tagRepository.findOne(uuid)
+      return tagUpdated
     } catch (error) {
       console.log(error)
-      return new Error('Error Desonocido')
+      return new Error('No se Logro Actualizar la Etiqueta')
     }
   }
 }

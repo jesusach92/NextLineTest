@@ -1,0 +1,606 @@
+{
+	"info": {
+		"_postman_id": "eb88d0e4-ab95-4dcf-a62a-3938ef55818e",
+		"name": "NextLineTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21193663"
+	},
+	"item": [
+		{
+			"name": "Autenthication",
+			"item": [
+				{
+					"name": "LogOut",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImM0NjE2ZmMzLTIzYzItNGYxZC1hYWJiLWFlNjhkMjMwYWVlYyIsInVzZXJUeXBlIjoiVXNlciIsImlhdCI6MTY4NDc5NTY0MSwiZXhwIjoxNjg1MzM1NjQxfQ.kCg8kqo7vAtWd5WDngx54EynccX1uljerpvTlT3kHwU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\" :\"jesusach92@gmail.com\"\r\n, \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIn",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJUb2tlblNlc3Npb25FbnRpdHkiOnsidXNlclVVSUQiOiJlMjUyZTBmMC05NDZjLTQ4MGMtYjk2OS0yNWY4ZWQ4OWFiNGEifSwiaWF0IjoxNjg0Nzg0NjQ4LCJleHAiOjE2ODQ3ODgyNDh9.00oJgWWUDwgtyCOPBFTt5izhj7IbBnVExR81FHSUamw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Jesus Alberto Castillo\",\r\n \"email\":\"Prieba5@gmail.com\", \r\n    \"password\":\"12345678\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Jesus\",\r\n    \"email\":\"Prieba5@gmail.com\", \r\n    \"password\":\"12345678\",\r\n    \"userType\":\"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetUsers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/PC/Downloads/RESUME.pdf"
+								},
+								{
+									"key": "title",
+									"value": "Es una Tarea de Prueba 3",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Está es una Tarea de Prueba",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "DONE",
+									"type": "text"
+								},
+								{
+									"key": "dueDate",
+									"value": "2023-05-20 22:07:41.437",
+									"type": "text"
+								},
+								{
+									"key": "isPublic",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "createdBy",
+									"value": "e252e0f0-946c-480c-b969-25f8ed89ab4a",
+									"type": "text"
+								},
+								{
+									"key": "sharedWith",
+									"value": "e252e0f0-946c-480c-b969-25f8ed89ab4a",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "Node,urgente,Request",
+									"type": "text"
+								},
+								{
+									"key": "comments",
+									"value": "Urge que se actualice la forma de Peticion",
+									"type": "text"
+								},
+								{
+									"key": "responsible",
+									"value": "e252e0f0-946c-480c-b969-25f8ed89ab4a",
+									"type": "text"
+								},
+								{
+									"key": "uuid",
+									"value": "5efd0a52-92aa-4af6-8fce-75f5061df05c",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserByUUID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTIzOTEsImV4cCI6MTY4NTM1MjM5MX0.VnzREKvBrsZnWy0VzlfU9ZJZqahYJj_SqFvRv8MruKo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Users/707521e8-0c51-4b7a-a620-7f009bfe8627",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Users",
+								"707521e8-0c51-4b7a-a620-7f009bfe8627"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTIzOTEsImV4cCI6MTY4NTM1MjM5MX0.VnzREKvBrsZnWy0VzlfU9ZJZqahYJj_SqFvRv8MruKo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/PC/Downloads/RESUME.pdf"
+								},
+								{
+									"key": "title",
+									"value": "Es una Tarea de Prueba 3",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Está es una Tarea de Prueba",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "DONE",
+									"type": "text"
+								},
+								{
+									"key": "dueDate",
+									"value": "2023-05-20 22:07:41.437",
+									"type": "text"
+								},
+								{
+									"key": "isPublic",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "createdBy",
+									"value": "e252e0f0-946c-480c-b969-25f8ed89ab4a",
+									"type": "text"
+								},
+								{
+									"key": "sharedWith",
+									"value": "e252e0f0-946c-480c-b969-25f8ed89ab4a",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "Node,urgente,Request",
+									"type": "text"
+								},
+								{
+									"key": "comments",
+									"value": "Urge que se actualice la forma de Peticion",
+									"type": "text"
+								},
+								{
+									"key": "responsible",
+									"value": "e252e0f0-946c-480c-b969-25f8ed89ab4a",
+									"type": "text"
+								},
+								{
+									"key": "uuid",
+									"value": "5efd0a52-92aa-4af6-8fce-75f5061df05c",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Users/f19fad7f-83d1-4c2c-9b60-64dd98c31016",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Users",
+								"f19fad7f-83d1-4c2c-9b60-64dd98c31016"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTIzOTEsImV4cCI6MTY4NTM1MjM5MX0.VnzREKvBrsZnWy0VzlfU9ZJZqahYJj_SqFvRv8MruKo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n\"email\":\"jesusach92@gmail.com\", \r\n\"password\":\"123456789\", \r\n\"userType\":\"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Users/707521e8-0c51-4b7a-a620-7f009bfe8627",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Users",
+								"707521e8-0c51-4b7a-a620-7f009bfe8627"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "CreateTask",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ3OTYzNzMsImV4cCI6MTY4NTMzNjM3M30.dfypPjRtWAfOln_clKxPCxxTghW3PoqikCkwKUD7F74",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Tasks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "GetTags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags/04db72ff-fe53-4c1b-83e8-a2b706cf8f8d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags",
+								"04db72ff-fe53-4c1b-83e8-a2b706cf8f8d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteTag",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags/70cfdabf-5b1b-4abd-ba25-6955e89386b6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags",
+								"70cfdabf-5b1b-4abd-ba25-6955e89386b6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\":\"C#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTag",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\":\".NET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags/293a0bfd-ba5d-4de3-b719-0e56fccb8c9a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags",
+								"293a0bfd-ba5d-4de3-b719-0e56fccb8c9a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTQzOTgsImV4cCI6MTY4NTM1NDM5OH0.2ikE95B9O49VVqceIkpT8WIE6fWchYvxvNNkG5RNQTE",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

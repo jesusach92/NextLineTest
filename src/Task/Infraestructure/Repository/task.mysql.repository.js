@@ -7,14 +7,32 @@ export class MySQLTaskRepository {
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async (params) => {
+  getAll = async () => {
     try {
       const db = await this.MySQL.createConnection()
-      const [tasks] = await db.query('SELECT * FROM tasks;')
+      const [tasks] = await db.query(
+        'SELECT uuid, title, description, status, dueDate, isPublic, createdBy FROM tasks;'
+      )
       db.end()
       return tasks
     } catch (e) {
       throw new Error('Error Desconocido')
+    }
+  }
+
+  getPublicTasks = async () => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const [tasks] = await db.query(
+        'SELECT uuid, title, description, status, dueDate, createdBy FROM tasks WHERE isPublic = true;'
+      )
+      db.end()
+      if (Array.isArray(tasks) && tasks.length === 0)
+        throw new Error('No hay Tareas Publicas')
+      console.log(tasks)
+      return tasks
+    } catch (error) {
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -30,7 +48,7 @@ export class MySQLTaskRepository {
       }
       return task
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -41,10 +59,9 @@ export class MySQLTaskRepository {
         task
       ])
       await db.end()
-      if (!task) {
+      if (ResultSetHeader && ResultSetHeader.insertId === 0) {
         throw new Error('Tarea no Creada')
       }
-      return { id: ResultSetHeader.insertId, ...task }
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
@@ -75,12 +92,11 @@ export class MySQLTaskRepository {
         [uuid]
       )
       await db.end()
-      if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se pudo borrar')
+      if (ResultSetHeader && ResultSetHeader.affectedRows === 0) {
+        throw new Error('No se pudo borrar la Tarea')
       }
-      return uuid
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 }

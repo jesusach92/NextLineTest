@@ -16,7 +16,7 @@ export class MySQLTaskShareRepository {
       db.end()
       return taskshared
     } catch (e) {
-      return Error('Error Desconocido')
+      throw Error('Error Desconocido')
     }
   }
 
@@ -29,7 +29,7 @@ export class MySQLTaskShareRepository {
       )
       return taskShared
     } catch (error) {
-      return new Error('Error Inesperado')
+      throw new Error('Error Inesperado')
     }
   }
 
@@ -43,7 +43,7 @@ export class MySQLTaskShareRepository {
       db.end()
       return usersShared
     } catch (error) {
-      return new Error('Error Desconocido')
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -57,7 +57,7 @@ export class MySQLTaskShareRepository {
       db.end()
       return usersShared
     } catch (error) {
-      return new Error('Error Desconocido')
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -70,11 +70,11 @@ export class MySQLTaskShareRepository {
       )
       await db.end()
       if (!ResultSetHeader && ResultSetHeader.insertId === 0) {
-        return new Error('Tarea no Compartida')
+        throw new Error('Tarea no Compartida')
       }
       return taskshareEntity
     } catch (error) {
-      return new Error(error.sqlMessage)
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -88,12 +88,12 @@ export class MySQLTaskShareRepository {
       await db.end()
 
       if (ResultSetHeader.affectedRows === 0) {
-        return new Error('No se pudo Actualizar')
+        throw new Error('No se pudo Actualizar')
       }
       return id
     } catch (error) {
       console.log(error)
-      return new Error('Error Inesperado')
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -106,11 +106,11 @@ export class MySQLTaskShareRepository {
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
-        return new Error('No se pudo borrar')
+        throw new Error('No se pudo borrar')
       }
       return uuid
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 }

@@ -1,11 +1,11 @@
 export default class AuthenticationEntity {
   constructor(tokenSession) {
-    this.tokenSession = tokenSession
+    this.token = tokenSession
   }
 
   generateSessionEntity = () => {
     const AuthenticationEntity = {
-      tokenSession: this.tokenSession
+      token: this.token
     }
     return Object.freeze(AuthenticationEntity)
   }
