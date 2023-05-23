@@ -9,7 +9,7 @@ export default class Application {
   constructor(port) {
     this.port = port
     this.app = express()
-    this.app.use(fileupload())
+    this.app.use(fileupload({ limits: { fileSize: 50 * 1024 * 1024 } }))
     this.app.use(express.json())
     this.app.use(cors())
     this.app.use(morgan('dev'))

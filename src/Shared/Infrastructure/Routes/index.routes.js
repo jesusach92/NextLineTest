@@ -10,12 +10,14 @@ import tagtaskRouter from '../../../TagTask/Infrastructure/Routes/tagtask.routes
 import authenticationRouter, {
   authenticationController
 } from '../../../Authentication/Infraestructure/Routes/authentication.routes.js'
+import fileRouter from '../../../File/Infrastructure/Routes/file.routes.js'
 
 const router = Router()
 
 router.post('/Register', userController.createOne)
 router.use('/', authenticationRouter)
 router.use('/', authenticationController.validateSession)
+router.use('/files', fileRouter)
 router.use('/users', userRouter)
 router.use('/tasks', taskRouter)
 router.use('/sharedtasks', taskshareRouter)
