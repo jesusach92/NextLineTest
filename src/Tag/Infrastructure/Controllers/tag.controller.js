@@ -4,28 +4,35 @@ export class TagController {
   }
 
   getTags = async (req, res) => {
-    console.log(req.userSession)
     const tags = await this.tagUseCases.getTags(req.query)
+    if (tags instanceof Error) return res.status(404).json(tags.message)
     return res.status(200).json(tags)
   }
 
   getTag = async (req, res) => {
     const tag = await this.tagUseCases.findTag(req.params.id)
+    if (tag instanceof Error) return res.status(404).json(tag.message)
     return res.status(200).json(tag)
   }
 
   createTag = async (req, res) => {
-    const taguuid = await this.tagUseCases.createTag(req.body)
-    return res.status(201).json(taguuid)
+    const tag = await this.tagUseCases.createTag(req.body)
+    if (tag instanceof Error) return res.status(400).json(tag.message)
+    return res.status(201).json(tag)
   }
 
   deleteTag = async (req, res) => {
     const tagDeleted = await this.tagUseCases.deleteTag(req.params.id)
+    if (tagDeleted instanceof Error)
+      return res.status(400).json(tagDeleted.message)
     return res.status(200).json(tagDeleted)
   }
 
   updateTag = async (req, res) => {
-    const updatedtag = await this.tagUseCases.updateTag(req.body)
+    const updatedtag = await this.tagUseCases.updateTag({
+      uuid: req.params.id,
+      ...req.body
+    })
     return res.status(200).json(updatedtag)
   }
 }

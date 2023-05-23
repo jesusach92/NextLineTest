@@ -12,11 +12,8 @@ export class UserUseCases {
   }
 
   quitPassword = (user) => {
-    if (!user) {
-      return user
-    }
-    const { password, ...userWithOutPass } = user
-    return userWithOutPass
+    const { id, password, ...userData } = user
+    return userData
   }
 
   createUser = async (data) => {
@@ -33,62 +30,67 @@ export class UserUseCases {
         uuid,
         userType
       )
-      const user = await this.UserRepository.createOne(
-        userEntity.generateUser()
+      await this.UserRepository.createOne(userEntity.generateUser())
+      const userWithOutPassword = this.quitPassword(userEntity.generateUser())
+      return userWithOutPassword
+    } catch (error) {
+      return new Error(error.message)
+    }
+  }
+
+  deleteUser = async (uuidUser) => {
+    try {
+      const { id, password, ...userToDeleted } =
+        await this.UserRepository.findOne(uuidUser)
+      await this.UserRepository.deleteOne(uuidUser)
+      return { Message: 'Usuario Borrado', user: userToDeleted }
+    } catch (error) {
+      return new Error('No se logro borrar el Usuario')
+    }
+  }
+
+  findUser = async (uuidUser) => {
+    try {
+      const { id, password, ...userFound } = await this.UserRepository.findOne(
+        uuidUser
       )
-      const userWithOutPassword = this.quitPassword(user)
-
-      return userWithOutPassword
-    } catch (error) {
-      return error
-    }
-  }
-
-  deleteUser = async (uuid) => {
-    try {
-      const uuidDeleted = await this.UserRepository.deleteOne(uuid)
-      return uuidDeleted
-    } catch (error) {
-      return error
-    }
-  }
-
-  findUser = async (uuid) => {
-    try {
-      const user = await this.UserRepository.findOne(uuid)
-      const userWithOutPassword = this.quitPassword(user)
-      return userWithOutPassword
+      return userFound
     } catch (e) {
-      return e
+      return new Error('No se Encontro el Usuario')
     }
   }
 
   findUserByEmail = async (email) => {
     try {
-      const user = await this.UserRepository.findUserByEmail(email)
+      const { id, ...user } = await this.UserRepository.findUserByEmail(email)
       return user
     } catch (error) {
-      throw new Error('No se Encontro el Usuario')
+      return new Error('No se Encontro el Usuario')
     }
   }
 
   getUserPasswordHash = async (uuid) => {
     try {
-      const user = await this.UserRepository.findOne(uuid)
-      const { password } = user
+      const { password } = await this.UserRepository.findOne(uuid)
       return password
     } catch (error) {
-      return error
+      return new Error('No se Encontro el Usuario')
     }
   }
 
   getUsers = async (params) => {
-    const users = await this.UserRepository.getAll(params)
-    if (users && users.length > 0) {
-      const usersWithoutPassword = users.map((e) => this.quitPassword(e))
-      return usersWithoutPassword
+    try {
+      const users = await this.UserRepository.getAll(params)
+      if (Array.isArray(users) && users.length > 0) {
+        return {
+          Total: users.length,
+          users
+        }
+      }
+      return new Error('No hay usuarios para Mostrar')
+    } catch (error) {
+      return new Error('No lograron Mostrar Usuarios')
     }
-    return users
   }
 
   updateUser = async (fields) => {
@@ -100,17 +102,12 @@ export class UserUseCases {
         )
         fieldtoUpdate.password = passwordHash
       }
-      const uuidUpdated = await this.UserRepository.updateOne(
-        uuid,
-        fieldtoUpdate
-      )
-      if (uuidUpdated === uuid) {
-        const userUpdated = await this.findUser(uuidUpdated)
-        return userUpdated
-      }
-      return uuidUpdated
+      await this.UserRepository.updateOne(uuid, fieldtoUpdate)
+      const { id, ...user } = await this.findUser(uuid)
+      const userUpdated = this.quitPassword(user)
+      return userUpdated
     } catch (error) {
-      return error
+      return new Error('No se logro Actualizar el Usuario')
     }
   }
 }

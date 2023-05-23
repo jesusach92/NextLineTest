@@ -16,34 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tasktags`
+-- Table structure for table `taskfiles`
 --
 
-DROP TABLE IF EXISTS `tasktags`;
+DROP TABLE IF EXISTS `taskfiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tasktags` (
+CREATE TABLE `taskfiles` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(36) NOT NULL,
   `taskID` int unsigned NOT NULL,
   `taskUUID` varchar(36) NOT NULL,
-  `tagID` int unsigned NOT NULL,
-  `tagUUID` varchar(36) NOT NULL,
+  `fileID` int unsigned NOT NULL,
+  `fileUUID` varchar(36) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `taskID` (`taskID`,`tagID`),
-  KEY `fkTagTask` (`tagID`),
-  CONSTRAINT `fkTagTask` FOREIGN KEY (`tagID`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fkTaskTag` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`id`) ON DELETE CASCADE
+  UNIQUE KEY `taskID` (`taskID`,`fileID`),
+  KEY `fkFileTask` (`fileID`),
+  CONSTRAINT `fkFileTask` FOREIGN KEY (`fileID`) REFERENCES `files` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fkTaskFile` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tasktags`
+-- Dumping data for table `taskfiles`
 --
 
-LOCK TABLES `tasktags` WRITE;
-/*!40000 ALTER TABLE `tasktags` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tasktags` ENABLE KEYS */;
+LOCK TABLES `taskfiles` WRITE;
+/*!40000 ALTER TABLE `taskfiles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `taskfiles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-22  9:05:49
+-- Dump completed on 2023-05-22 22:34:25

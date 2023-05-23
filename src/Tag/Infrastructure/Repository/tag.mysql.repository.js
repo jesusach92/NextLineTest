@@ -10,7 +10,7 @@ export class MySQLTagRepository {
   getAll = async (params) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [tags] = await db.query('SELECT * FROM tags;')
+      const [tags] = await db.query('SELECT uuid, tag FROM tags;')
       db.end()
       return tags
     } catch (error) {
@@ -21,9 +21,10 @@ export class MySQLTagRepository {
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[tag]] = await db.query('SELECT * FROM tags WHERE uuid= ?;', [
-        uuid
-      ])
+      const [[tag]] = await db.query(
+        'SELECT tag, uuid FROM tags WHERE uuid= ?;',
+        [uuid]
+      )
       await db.end()
       if (!tag) {
         throw new Error('Tag no Encontrada')
@@ -42,7 +43,6 @@ export class MySQLTagRepository {
       if (ResultSetHeader && ResultSetHeader.insertId === 0) {
         throw new Error('Tag no Creada')
       }
-      return true
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
@@ -59,7 +59,6 @@ export class MySQLTagRepository {
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo Actualizar')
       }
-      return true
     } catch (error) {
       throw new Error(error.sqlMessage)
     }

@@ -10,7 +10,9 @@ export class MySQLUserRepository {
   getAll = async (params) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [users] = await db.query('SELECT * FROM users;')
+      const [users] = await db.query(
+        'SELECT name, email, userType, uuid FROM users;'
+      )
       db.end()
       return users
     } catch (e) {
@@ -30,7 +32,7 @@ export class MySQLUserRepository {
       }
       return user
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -46,7 +48,7 @@ export class MySQLUserRepository {
       }
       return user
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -60,7 +62,6 @@ export class MySQLUserRepository {
       if (ResultSetHeader && ResultSetHeader.insertId === 0) {
         throw new Error('Usuario no Creado')
       }
-      return user
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
@@ -77,9 +78,8 @@ export class MySQLUserRepository {
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo Actualizar')
       }
-      return uuid
     } catch (error) {
-      return new Error('Error Inesperado')
+      throw new Error(error.sqlMessage)
     }
   }
 
@@ -96,7 +96,7 @@ export class MySQLUserRepository {
       }
       return uuid
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 }

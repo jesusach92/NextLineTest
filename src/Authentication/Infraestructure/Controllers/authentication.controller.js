@@ -17,7 +17,7 @@ export class AuthenticationController {
       req.headers.authorization
     )
     if (isValidSession instanceof Error)
-      return res.status(403).json('No tienes una sesion valida')
+      return res.status(403).json(isValidSession.message)
     req.userSession = {
       userUUID: isValidSession.userUUID,
       userType: isValidSession.userType
@@ -30,7 +30,7 @@ export class AuthenticationController {
       req.headers.authorization
     )
     if (isClosedSession instanceof Error)
-      return res.status(400).json('No se cerro la sesion')
+      return res.status(400).json(isClosedSession.message)
     return res.status(200).json(isClosedSession)
   }
 }

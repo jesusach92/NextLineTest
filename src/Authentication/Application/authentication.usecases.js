@@ -74,7 +74,7 @@ export class AuthenticationUseCases {
         }
       }
     } catch (error) {
-      return new Error('No se cerrar la sesion')
+      return new Error('No se logro cerrar la sesion')
     }
   }
 }

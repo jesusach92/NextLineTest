@@ -19,7 +19,7 @@ const userRouter = Router()
 userRouter.get('/', userController.getAll) // Obtener todos los usuarios
 userRouter.get('/:id', userController.getOne) // Obtener un usuario por su UUID
 userRouter.post('/', userController.createOne) // Crear un nuevo usuario
-userRouter.patch('/', userController.updateOne) // Actualizar un usuario
+userRouter.patch('/:id', userController.updateOne) // Actualizar un usuario
 userRouter.delete('/:id', userController.deleteOne) // Eliminar un usuario por su UUID
 
 // Exportar el router de usuarios

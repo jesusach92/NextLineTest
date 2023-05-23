@@ -34,7 +34,7 @@ CREATE TABLE `comments` (
   KEY `fkComentTask` (`taskID`),
   KEY `fkComentUser` (`userID`),
   CONSTRAINT `fkComentTask` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`id`),
-  CONSTRAINT `fkComentUser` FOREIGN KEY (`userID`) REFERENCES `users` (`id`)
+  CONSTRAINT `fkComentUser` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -44,7 +44,6 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (2,'5001dfc8-9a21-4611-a11f-2794e7171229',1,'c20957dc-7bcb-4ed1-a6d4-537f290faf5e',1,'e252e0f0-946c-480c-b969-25f8ed89ab4a','Este es un nuevo Comentario de Prueba'),(3,'3586f2af-a7fe-4bf5-b630-3ec6afddbe7b',1,'c20957dc-7bcb-4ed1-a6d4-537f290faf5e',1,'e252e0f0-946c-480c-b969-25f8ed89ab4a','Este es un nuevo Comentario de Prueba');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-22  9:05:49
+-- Dump completed on 2023-05-22 22:34:25

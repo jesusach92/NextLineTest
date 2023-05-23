@@ -16,29 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tags`
+-- Table structure for table `files`
 --
 
-DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tags` (
+CREATE TABLE `files` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(36) NOT NULL,
-  `tag` varchar(10) NOT NULL,
+  `name` varchar(10) NOT NULL,
+  `format` enum('Documento','Imagen') DEFAULT NULL,
+  `url` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `tag` (`tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+  UNIQUE KEY `url` (`url`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tags`
+-- Dumping data for table `files`
 --
 
-LOCK TABLES `tags` WRITE;
-/*!40000 ALTER TABLE `tags` DISABLE KEYS */;
-INSERT INTO `tags` VALUES (2,'04db72ff-fe53-4c1b-83e8-a2b706cf8f8d','MySQL'),(3,'60e7944a-fa89-4565-a605-80fa77b2e570','NodeJS'),(4,'70cfdabf-5b1b-4abd-ba25-6955e89386b6','Urgent');
-/*!40000 ALTER TABLE `tags` ENABLE KEYS */;
+LOCK TABLES `files` WRITE;
+/*!40000 ALTER TABLE `files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-22  9:05:49
+-- Dump completed on 2023-05-22 22:34:25

@@ -20,8 +20,7 @@ export class TaskController {
       ...req.userSession,
       file: req?.files?.file ?? null
     })
-    if (task instanceof Error)
-      return res.status(400).json('No se Creo La Tarea')
+    if (task instanceof Error) return res.status(400).json(task.message)
     return res.status(201).json(task)
   }
 

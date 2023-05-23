@@ -16,35 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tasks`
+-- Table structure for table `taskshared`
 --
 
-DROP TABLE IF EXISTS `tasks`;
+DROP TABLE IF EXISTS `taskshared`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tasks` (
+CREATE TABLE `taskshared` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `UserID` int unsigned NOT NULL,
+  `taskID` int unsigned NOT NULL,
+  `responsible` tinyint(1) DEFAULT '0',
   `uuid` varchar(36) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `status` enum('PENDING','IN PROGRESS','DONE') DEFAULT NULL,
-  `dueDate` timestamp(3) NULL DEFAULT NULL,
-  `isPublic` tinyint(1) DEFAULT NULL,
-  `createdBy` int unsigned NOT NULL,
+  `taskUUID` varchar(36) NOT NULL,
+  `userUUID` varchar(36) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fkUser` (`createdBy`),
-  CONSTRAINT `fkUser` FOREIGN KEY (`createdBy`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+  UNIQUE KEY `taskID` (`taskID`,`UserID`),
+  KEY `fkUserTask` (`UserID`),
+  CONSTRAINT `fkTaskUser` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fkUserTask` FOREIGN KEY (`UserID`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tasks`
+-- Dumping data for table `taskshared`
 --
 
-LOCK TABLES `tasks` WRITE;
-/*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (1,'c20957dc-7bcb-4ed1-a6d4-537f290faf5e','Otra Tarea de Prueba','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1),(2,'6e9c780c-c88c-4135-9fbf-0c5f29a06d82','Es una Tarea de Prueba','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1),(3,'64ef1344-08d5-48b3-a394-6ce61e67d87b','Es una Tarea de Prueba 2','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1),(4,'bff9ed80-738c-4383-95fb-de8a6d196547','Es una Tarea de Prueba 3','Está es una Tarea de Prueba','DONE','2023-05-21 04:07:41.437',1,1);
-/*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
+LOCK TABLES `taskshared` WRITE;
+/*!40000 ALTER TABLE `taskshared` DISABLE KEYS */;
+/*!40000 ALTER TABLE `taskshared` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-22  9:05:49
+-- Dump completed on 2023-05-22 22:34:25

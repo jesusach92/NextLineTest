@@ -15,15 +15,15 @@ export class TokenUtil {
       )
       return token
     } catch (error) {
-      return new Error('No se logro generar Token')
+      throw new Error(error.message)
     }
   }
 
   verifytoken = async ({ token }) => {
     try {
       return jwt.verify(token, process.env.PASS_JWT)
-    } catch (e) {
-      return new Error('Error Inesperado')
+    } catch (error) {
+      throw new Error(error.message)
     }
   }
 }

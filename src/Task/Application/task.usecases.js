@@ -18,8 +18,12 @@ export class TaskUseCases {
   }
 
   getTasks = async (params) => {
-    const Tasks = await this.taskRepository.getAll(params)
-    return { Total: Tasks.length, Tasks }
+    try {
+      const Tasks = await this.taskRepository.getAll(params)
+      return { Total: Tasks.length, Tasks }
+    } catch (error) {
+      return new Error('Error Inesperado')
+    }
   }
 
   findTask = async (uuidTask) => {
