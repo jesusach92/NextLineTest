@@ -1,10 +1,8 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
-import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
 export class MySQLTagRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
-    this.MySQLUtils = MySQLUtils
   }
 
   getAll = async (params) => {

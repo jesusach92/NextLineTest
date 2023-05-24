@@ -12,10 +12,11 @@ export class CommentUseCases {
   getcommentsByTask = async (uuidTask) => {
     try {
       const comments = await this.commentRepository.getAll(uuidTask)
-      if (Array.isArray(comments) && comments.length > 0)
-        return new Error('No hay comentarios para la Tarea')
+      if (Array.isArray(comments) && comments.length === 0)
+        return new Error('No hay comentarios para la Tarea ')
       return { Total: comments.length, comments }
     } catch (error) {
+      console.log(error)
       return new Error('No hay comentarios para la Tarea')
     }
   }
@@ -31,39 +32,43 @@ export class CommentUseCases {
 
   createcomment = async (data) => {
     try {
-      const { uuidTask, uuidUser, comment } = data
+      const { taskUUID, userUUID, comment } = data
       const uuid = this.uuidUtils.generate()
-      const user = await this.userUsesCase.findUser(uuidUser)
-      const task = await this.taskUsesCase.findTask(uuidTask)
-      const commentEntity = new CommentEntity(
-        uuid,
-        task.id,
-        uuidTask,
-        user.id,
-        uuidUser,
-        comment
-      )
-      const newcomment = await this.commentRepository.createOne(
-        commentEntity.generateComment()
-      )
-      return { ...newcomment }
+      const user = await this.userUsesCase.findUser(userUUID)
+      const task = await this.taskUsesCase.findTask(taskUUID)
+      if (user instanceof Error || task instanceof Error)
+        return new Error('No se logro Crear el Comentario')
+      const commentEntity = new CommentEntity(uuid, taskUUID, userUUID, comment)
+      await this.commentRepository.createOne(commentEntity.generateComment())
+      return commentEntity.generateComment()
     } catch (error) {
-      return error
+      return new Error(error.message)
     }
   }
 
   updatecomment = async (data) => {
     try {
+      console.log(data)
       const { uuid, comment } = data
-      const uuidComment = await this.commentRepository.updateOne(uuid, comment)
-      return uuidComment
-    } catch (error) {}
+      await this.commentRepository.updateOne(uuid, comment)
+      const commentUpdated = await this.commentRepository.findOne(uuid, comment)
+      return { Message: 'Comentario Actualizado', commentUpdated }
+    } catch (error) {
+      console.log(error)
+      return new Error('No se logro actualizar el comentario')
+    }
   }
 
   deletecomment = async (uuidcomment) => {
-    const uuidcommentDeleted = await this.commentRepository.deleteOne(
-      uuidcomment
-    )
-    return uuidcommentDeleted
+    try {
+      const comentToDelete = await this.commentRepository.findOne(uuidcomment)
+      await this.commentRepository.deleteOne(uuidcomment)
+      return {
+        Message: 'Comentario Borrado Exitosamente',
+        comment: comentToDelete
+      }
+    } catch (error) {
+      return new Error(error.message)
+    }
   }
 }

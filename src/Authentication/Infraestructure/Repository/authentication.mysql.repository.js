@@ -1,10 +1,8 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
-import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
 export class MySQLAuthenticationRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
-    this.MySQLUtils = MySQLUtils
   }
 
   findOne = async (token) => {

@@ -1,10 +1,8 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
-import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
 export class MySQLFileRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
-    this.MySQLUtils = MySQLUtils
   }
 
   getAll = async () => {
@@ -78,7 +76,6 @@ export class MySQLFileRepository {
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se encontro Archivo para Borrar')
       }
-      return uuid
     } catch (error) {
       throw new Error(error.sqlMessage)
     }

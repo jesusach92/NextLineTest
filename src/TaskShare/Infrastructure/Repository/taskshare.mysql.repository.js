@@ -1,10 +1,8 @@
 import { MySQLConnection } from '../db/MySQL/myslq.config.js'
-import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
 
 export class MySQLTaskShareRepository {
   constructor() {
     this.MySQL = new MySQLConnection()
-    this.MySQLUtils = MySQLUtils
   }
 
   getAllTasksIDS = async (params) => {
