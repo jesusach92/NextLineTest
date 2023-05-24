@@ -1,4 +1,4 @@
-import { MySQLConnection } from '../../Infraestructure/db/MySQL/myslq.config.js'
+import { MySQLConnection } from '../db/MySQL/myslq.config.js'
 
 export class MySQLCommentRepository {
   constructor() {
