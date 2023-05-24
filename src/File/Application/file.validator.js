@@ -5,11 +5,11 @@ export class FileValidator {
   }
 
   validateFile({ mimetype, size }) {
-    console.log(mimetype, size)
     const format = mimetype.split('/')[1]
     if (!(this.allowedFormats.includes(format) && this.maxSize > size))
       throw new Error(
         'Solo se pueden Subir Archivos PDF,PNG y JPG menores a 5MB'
       )
+    return format
   }
 }

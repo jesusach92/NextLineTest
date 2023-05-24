@@ -1,5 +1,5 @@
-import { MySQLConnection } from '../db/MySQL/myslq.config.js'
-import { MySQLUtils } from '../db/MySQL/mysql.utils.js'
+import { MySQLConnection } from '../../Infrastructure/db/MySQL/myslq.config.js'
+import { MySQLUtils } from '../../Infrastructure/db/MySQL/mysql.utils.js'
 
 export class MySQLCommentRepository {
   constructor() {
@@ -7,12 +7,16 @@ export class MySQLCommentRepository {
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async (params) => {
+  getAll = async (uuidTask) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [comments] = await db.query('SELECT * FROM comments;')
-
+      const [comments] = await db.query(
+        'SELECT * FROM comments WHERE uuidTask = ?;',
+        [uuidTask]
+      )
       db.end()
+      if (Array.isArray(comments) && comments.length === 0)
+        throw new Error('No se encontraron Comentarios')
       return comments
     } catch (e) {
       throw new Error('Error Desconocido')

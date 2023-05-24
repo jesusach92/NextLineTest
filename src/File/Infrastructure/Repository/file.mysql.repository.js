@@ -7,10 +7,12 @@ export class MySQLFileRepository {
     this.MySQLUtils = MySQLUtils
   }
 
-  getAll = async (params) => {
+  getAll = async () => {
     try {
       const db = await this.MySQL.createConnection()
-      const [files] = await db.query('SELECT uuid, file FROM files;')
+      const [files] = await db.query(
+        'SELECT uuid, name, format, url  FROM files;'
+      )
       db.end()
       return files
     } catch (error) {
@@ -21,13 +23,12 @@ export class MySQLFileRepository {
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[file]] = await db.query(
-        'SELECT file, uuid FROM files WHERE uuid= ?;',
-        [uuid]
-      )
+      const [[file]] = await db.query('SELECT * FROM files WHERE uuid= ?;', [
+        uuid
+      ])
       await db.end()
       if (!file) {
-        throw new Error('file no Encontrada')
+        throw new Error('Archivo no Encontrado')
       }
       return file
     } catch (error) {
@@ -43,7 +44,7 @@ export class MySQLFileRepository {
       ])
       await db.end()
       if (ResultSetHeader && ResultSetHeader.insertId === 0) {
-        throw new Error('file no Creada')
+        throw new Error(`Error de BD el archivo se encuentra en ${file.url}`)
       }
     } catch (error) {
       throw new Error(error.sqlMessage)
@@ -75,7 +76,7 @@ export class MySQLFileRepository {
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
-        throw new Error('No se encontro Etiqueta para Borrar')
+        throw new Error('No se encontro Archivo para Borrar')
       }
       return uuid
     } catch (error) {

@@ -10,13 +10,23 @@ export class CommentUseCases {
   }
 
   getcommentsByTask = async (uuidTask) => {
-    const comments = await this.commentRepository.getAll(uuidTask)
-    return { Total: comments.length, comments }
+    try {
+      const comments = await this.commentRepository.getAll(uuidTask)
+      if (Array.isArray(comments) && comments.length > 0)
+        return new Error('No hay comentarios para la Tarea')
+      return { Total: comments.length, comments }
+    } catch (error) {
+      return new Error('No hay comentarios para la Tarea')
+    }
   }
 
   findcomment = async (uuidcomment) => {
-    const comment = await this.commentRepository.findOne(uuidcomment)
-    return comment
+    try {
+      const comment = await this.commentRepository.findOne(uuidcomment)
+      return comment
+    } catch (error) {
+      return new Error('No se Encontro el Comentario')
+    }
   }
 
   createcomment = async (data) => {
@@ -43,10 +53,11 @@ export class CommentUseCases {
   }
 
   updatecomment = async (data) => {
-    const { uuid, comment } = data
-
-    const uuidComment = await this.commentRepository.updateOne(uuid, comment)
-    return uuidComment
+    try {
+      const { uuid, comment } = data
+      const uuidComment = await this.commentRepository.updateOne(uuid, comment)
+      return uuidComment
+    } catch (error) {}
   }
 
   deletecomment = async (uuidcomment) => {

@@ -12,27 +12,34 @@ export class FileUseCases {
 
   getFiles = async () => {
     try {
-      const Files = await this.FileRepository.getAll()
-      return { Total: Files.length, Files }
+      const Files = await this.fileRepository.getAll()
+      if (Array.isArray(Files) && Files.length > 0)
+        return { Total: Files.length, Files }
+      return new Error('No hay Archivos Almacenados')
     } catch (error) {
+      console.log(error)
       return new Error('No hay Archivos para Mostrar')
     }
   }
 
   findFile = async (uuid) => {
     try {
-      const File = new FileEntity(await this.FileRepository.findOne(uuid))
+      const File = new FileEntity(await this.fileRepository.findOne(uuid))
       return File.generateFile()
     } catch (error) {
-      return new Error('No se logro encontrar la Tarea')
+      return new Error('No se logro encontrar la Archivo')
     }
   }
 
-  uploadFile = async ({ body, files = null }) => {
+  uploadFile = async ({ body, files = null, userSession }) => {
+    console.log(files)
     try {
-      const { name } = body
-      this.fileValidator.validateFile(files.file)
-      const fileUploaded = this.storageRepository.uploadFile(files.file)
+      const { name = `${userSession.userUUID}-${Date.now()}` } = body
+      const format = this.fileValidator.validateFile(files.file)
+      const url = await this.storageRepository.uploadFile({
+        name,
+        ...files.file
+      })
       const uuid = this.uuidUtils.generate()
       const File = new FileEntity({
         uuid,
@@ -40,24 +47,27 @@ export class FileUseCases {
         format,
         url
       })
-      await this.FileRepository.createOne(File.generateFile())
+      await this.fileRepository.createOne(File.generateFile())
       return File.generateFile()
     } catch (error) {
       console.log(error)
-      return new Error('No se pudo Crear La Tarea')
+      return new Error('No se logro cargar el Archivo')
     }
   }
 
   deleteFile = async (uuid) => {
     try {
       const FiletoDeleted = new FileEntity(
-        await this.FileRepository.findOne(uuid)
+        await this.fileRepository.findOne(uuid)
       )
-
-      await this.FileRepository.deleteOne(uuid)
-      return FiletoDeleted.generateFile()
+      await this.storageRepository.deleteFile(FiletoDeleted.url)
+      await this.fileRepository.deleteOne(uuid)
+      return {
+        Messsage: 'Archivo Borrado con Exito',
+        File: FiletoDeleted.generateFile()
+      }
     } catch (error) {
-      return new Error('No se pudo Borrar la Tarea')
+      return new Error('No se pudo Borrar la Archivo')
     }
   }
 }
