@@ -27,7 +27,6 @@ export class MySQLTaskRepository {
       db.end()
       if (Array.isArray(tasks) && tasks.length === 0)
         throw new Error('No hay Tareas Publicas')
-      console.log(tasks)
       return tasks
     } catch (error) {
       throw new Error(error.sqlMessage)

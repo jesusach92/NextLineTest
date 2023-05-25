@@ -24,21 +24,20 @@ export class TaskShareController {
   }
 
   shareTask = async (req, res) => {
-    const response = await this.taskshareUseCases.shareTask(req.body)
+    const response = await this.taskshareUseCases.shareTask({
+      task: req.params.id,
+      ...req.body
+    })
     if (response instanceof Error)
-      return res.status(400).json('No se pudo compartir la Tarea')
+      return res.status(400).json('No se dejo de compartir la tarea')
     return res.status(201).json(response)
   }
 
-  deleteOne = async (req, res) => {
+  stopSharing = async (req, res) => {
     const useruuidDeleted = await this.taskshareUseCases.stopSharing(
       req.params.id
     )
     return res.status(200).json(useruuidDeleted)
   }
 
-  updateOne = async (req, res) => {
-    const updatedUser = await this.taskshareUseCases.toDoResponsible(req.body)
-    return res.status(200).json(updatedUser)
-  }
 }

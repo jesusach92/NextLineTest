@@ -4,10 +4,10 @@ import { TagController } from '../Controllers/tag.controller.js'
 import { MySQLTagRepository } from '../Repository/tag.mysql.repository.js'
 // import { MockTagRepository } from '../Repository/Tag.mock.respository.js'
 // Crear instancia del repositorio de MySQL para usuarios
-const TagRepository = new MySQLTagRepository()
+ const tagRepository = new MySQLTagRepository()
 
 // Crear instancias de los casos de uso y pasar el repositorio como dependencia
-export const tagUseCases = new TagUseCases(TagRepository)
+export const tagUseCases = new TagUseCases(tagRepository)
 
 // Crear instancia del controlador y pasar los casos de uso como dependencia
 const tagController = new TagController(tagUseCases)

@@ -1,7 +1,5 @@
 export class TaskShareEntity {
-  constructor(userID, userUUID, taskID, taskUUID, responsible, uuid) {
-    this.userID = userID
-    this.taskID = taskID
+  constructor(userUUID,  taskUUID, responsible, uuid) {
     this.responsible = responsible
     this.uuid = uuid
     this.taskUUID = taskUUID
@@ -10,11 +8,8 @@ export class TaskShareEntity {
 
   generateTaskShare = () => {
     const TaskShare = {
-      userID: this.userID,
       userUUID: this.userUUID,
-      taskID: this.taskID,
       taskUUID: this.taskUUID,
-
       responsible: this.responsible,
       uuid: this.uuid
     }

@@ -12,10 +12,11 @@ export class TagTaskController {
     return res.status(200).json(tagtasks)
   }
 
-  createOne = async (req, res, next) => {
-    const tagtask = await this.tagtaskUseCases.createtagtask(req.body)
-    if (tagtask instanceof Error)
-      return res.status(400).json('No se logro Agregar la Etiqueta a La Tarea')
+  assignTagstoTask = async (req, res) => {
+    const tagtask = await this.tagtaskUseCases.assignTagstoTask({taskUUID:req.params.id,... req.body})
+    if (tagtask instanceof Error) {
+      return res.status(400).json(tagtask.message)
+    }
     return res.status(200).json(tagtask)
   }
 

@@ -18,43 +18,13 @@ export const taskshareUseCases = new TaskShareUseCases(
 // Crear instancia del controlador y pasar los casos de uso como dependencia
 const taskshareController = new TaskShareController(taskshareUseCases)
 
-// Crear instancia del router de usuarios
 const taskshareRouter = Router()
 
-// Definir rutas de usuarios y asignar los métodos del controlador
-
-/**
- * Obtener todos los usuarios compartiendo tareas
- * Ruta: GET '/'
- */
 
 taskshareRouter.get('/tasks', taskshareController.getAll)
-
 taskshareRouter.get('/tasks/:id', taskshareController.getAllUsersShared)
+taskshareRouter.post('/:id', taskshareController.shareTask)
+taskshareRouter.patch('/:id', taskshareController.stopSharing)
 
-/**
- * Obtener tareas compartidas por parámetros de consulta
- * Ruta: GET '/search?'
- */
-taskshareRouter.get('/search?', taskshareController.getAll)
 
-/**
- * Compartir una nueva tarea
- * Ruta: POST '/'
- */
-taskshareRouter.post('/', taskshareController.shareTask)
-
-/**
- * Actualizar una tarea compartida
- * Ruta: PATCH '/'
- */
-taskshareRouter.patch('/', taskshareController.updateOne)
-
-/**
- * Eliminar una tarea compartida por su ID
- * Ruta: DELETE '/:id'
- */
-taskshareRouter.delete('/:id', taskshareController.deleteOne)
-
-// Exportar el router de Tareas Compartidas
 export default taskshareRouter

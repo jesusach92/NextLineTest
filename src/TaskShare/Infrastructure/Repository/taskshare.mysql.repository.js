@@ -5,11 +5,11 @@ export class MySQLTaskShareRepository {
     this.MySQL = new MySQLConnection()
   }
 
-  getAllTasksIDS = async (params) => {
+  getAllTasksIDS = async () => {
     try {
       const db = await this.MySQL.createConnection()
       const [taskshared] = await db.query(
-        'SELECT DISTINCT TaskID, taskUUID from taskshared'
+        'SELECT DISTINCT taskUUID from taskshared'
       )
       db.end()
       return taskshared

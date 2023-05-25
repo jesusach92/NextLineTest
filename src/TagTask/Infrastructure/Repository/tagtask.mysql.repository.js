@@ -22,7 +22,7 @@ export class MySQLTagTaskRepository {
     try {
       const db = await this.MySQL.createConnection()
       const [[tagtask]] = await db.query(
-        'SELECT * FROM tasktags WHERE uuid= ?;',
+        'SELECT uuid, taskUUID, tagUUID FROM tasktags WHERE uuid= ?;',
         [uuid]
       )
       await db.end()
@@ -45,7 +45,6 @@ export class MySQLTagTaskRepository {
       if (ResultSetHeader && ResultSetHeader.insertId === 0) {
         throw new Error('Tag no Asignada')
       }
-      return true
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
@@ -62,9 +61,8 @@ export class MySQLTagTaskRepository {
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo borrar')
       }
-      return uuid
     } catch (error) {
-      return error
+      throw new Error(error.sqlMessage)
     }
   }
 }

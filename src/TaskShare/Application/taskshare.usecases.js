@@ -23,18 +23,20 @@ export class TaskShareUseCases {
     }
   }
 
-  shareTask = async ({ usersUUIDS, UserResponsible, uuidTask }) => {
+  shareTask = async ({ usersUUIDS, UserResponsible, task }) => {
     try {
-      const task = await this.taskUseCases.findTask(uuidTask)
-      if (task.isPublic) {
-        const sharedTask = await this.getSharedTaskResolved(
-          usersUUIDS,
-          UserResponsible,
-          task
-        )
-        return sharedTask
-      }
-      return new Error('La tarea no es Publica')
+      const foundTask = await this.taskUseCases.findTask(task)
+      const sharedTask = await this.getSharedTaskResolved(
+        usersUUIDS,
+        UserResponsible,
+        foundTask
+      )
+      if (Array.isArray(sharedTask) && sharedTask.length > 0)
+        return {
+          Message: `Tarea:${task} compartida con ${sharedTask.length} Usuarios`,
+          sharedTask
+        }
+      return new Error("No se compartio correcamente la terea")
     } catch (error) {
       return new Error('No se Puedo Compartir la Tarea ')
     }
@@ -70,10 +72,8 @@ export class TaskShareUseCases {
         const user = await this.usersUseCases.findUser(useruuid)
         const isReponsible = useruuid === UserResponsible
         const taskUserShared = await this.shareTaskperUser(
-          user.id,
           user.uuid,
           isReponsible,
-          Task.id,
           Task.uuid
         )
         if (taskUserShared instanceof Error)
@@ -89,18 +89,10 @@ export class TaskShareUseCases {
     }
   }
 
-  shareTaskperUser = async (
-    UserID,
-    userUUID,
-    isResponsible,
-    taskID,
-    taskUUID
-  ) => {
+  shareTaskperUser = async (userUUID, isResponsible, taskUUID) => {
     try {
       const taskshareEntity = this.generateEntity(
-        UserID,
         userUUID,
-        taskID,
         taskUUID,
         isResponsible
       )
@@ -113,12 +105,10 @@ export class TaskShareUseCases {
     }
   }
 
-  generateEntity = (UserID, userUUID, taskID, taskUUID, isResponsible) => {
+  generateEntity = (userUUID, taskUUID, isResponsible) => {
     const uuid = this.uuidUtils.generate()
     const taskshareEntity = new TaskShareEntity(
-      UserID,
       userUUID,
-      taskID,
       taskUUID,
       isResponsible,
       uuid
@@ -141,7 +131,7 @@ export class TaskShareUseCases {
       if (!taskSharedRelation) {
         return new Error('La terea no Esta Compartida')
       }
-      const sharedUsers = await this.AllUsersByTask(taskSharedRelation.taskID)
+      const sharedUsers = await this.AllUsersByTask(taskSharedRelation.taskUUID)
 
       if (!Array.isArray(sharedUsers) && sharedUsers.length === 0) {
         return new Error('No hay usuarios Compartidos')
@@ -165,11 +155,8 @@ export class TaskShareUseCases {
   }
 
   AllUsersByTask = async (uuid) => {
-    console.log(uuid)
     try {
-      const { id } = await this.taskUseCases.findTask(uuid)
-
-      const sharedUsers = await this.taskshareRepository.getByTask(id)
+      const sharedUsers = await this.taskshareRepository.getByTask(uuid)
       return sharedUsers
     } catch (error) {
       return new Error('Error Inesperado')

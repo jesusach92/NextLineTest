@@ -5,7 +5,7 @@ export class MySQLTagRepository {
     this.MySQL = new MySQLConnection()
   }
 
-  getAll = async (params) => {
+  getAll = async () => {
     try {
       const db = await this.MySQL.createConnection()
       const [tags] = await db.query('SELECT uuid, tag FROM tags;')
@@ -25,10 +25,25 @@ export class MySQLTagRepository {
       )
       await db.end()
       if (!tag) {
-        throw new Error('Tag no Encontrada')
+        throw new ReferenceError('Tag no Encontrada')
       }
       return tag
     } catch (error) {
+      throw new Error(error.sqlMessage)
+    }
+  }
+
+  findTagByname = async (tag) => {
+    try {
+      const db = await this.MySQL.createConnection()
+      const [[uuid]] = await db.query('SELECT uuid from tags WHERE tag = ?', [
+        tag
+      ])
+      if (!uuid) throw new ReferenceError('No existe la etiqueta')
+      return uuid
+    } catch (error) {
+      if (error instanceof ReferenceError)
+        throw new ReferenceError(error.message)
       throw new Error(error.sqlMessage)
     }
   }

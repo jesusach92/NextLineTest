@@ -11,7 +11,7 @@ export class TagController {
 
   getTag = async (req, res) => {
     const tag = await this.tagUseCases.findTag(req.params.id)
-    if (tag instanceof Error) return res.status(404).json(tag.message)
+    if (tag instanceof ReferenceError) return res.status(404).json(tag.message)
     return res.status(200).json(tag)
   }
 

@@ -16,7 +16,6 @@ export class TagUseCases {
       await this.tagRepository.createOne(tagEntity.generateTag())
       return tagEntity.generateTag()
     } catch (error) {
-      console.log(error)
       return new Error('No se logro crear la etiqueta')
     }
   }
@@ -37,7 +36,17 @@ export class TagUseCases {
       const tag = await this.tagRepository.findOne(uuid)
       return tag
     } catch (error) {
-      console.log(error)
+      return new ReferenceError('No se Logro Encontrar la Etiqueta')
+    }
+  }
+
+  findTagbyName = async (tag) => {
+    try {
+      const uuid = await this.tagRepository.findTagByname(tag)
+      return uuid
+    } catch (error) {
+      if (error instanceof ReferenceError)
+        return new ReferenceError(error.message)
       return new Error('No se Logro Encontrar la Etiqueta')
     }
   }

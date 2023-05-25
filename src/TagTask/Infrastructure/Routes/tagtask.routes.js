@@ -24,8 +24,8 @@ const tagtaskRouter = Router()
 
 // Definir rutas de usuarios y asignar los métodos del controlador
 tagtaskRouter.get('/task/:id', tagtaskController.getTagsTask) // Obtener todos los usuarios
-tagtaskRouter.post('/', tagtaskController.createOne) // Crear un nuevo usuario
-tagtaskRouter.delete('/:id', tagtaskController.deleteOne) // Eliminar un usuario por su UUID
+tagtaskRouter.post('/task/:id', tagtaskController.assignTagstoTask) // Crear un nuevo usuario
+tagtaskRouter.delete('/task/:id', tagtaskController.deleteOne) // Eliminar un usuario por su UUID
 
 // Exportar el router de usuarios
 export default tagtaskRouter
