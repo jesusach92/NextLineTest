@@ -1,6 +1,5 @@
 export class TaskShareEntity {
-  constructor(userUUID,  taskUUID, responsible, uuid) {
-    this.responsible = responsible
+  constructor(userUUID,  taskUUID, uuid) {
     this.uuid = uuid
     this.taskUUID = taskUUID
     this.userUUID = userUUID
@@ -10,7 +9,6 @@ export class TaskShareEntity {
     const TaskShare = {
       userUUID: this.userUUID,
       taskUUID: this.taskUUID,
-      responsible: this.responsible,
       uuid: this.uuid
     }
     return Object.freeze(TaskShare)

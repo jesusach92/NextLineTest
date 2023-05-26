@@ -5,11 +5,11 @@ export class MySQLTaskShareRepository {
     this.MySQL = new MySQLConnection()
   }
 
-  getAllTasksIDS = async () => {
+  getAllTasksShared = async () => {
     try {
       const db = await this.MySQL.createConnection()
       const [taskshared] = await db.query(
-        'SELECT DISTINCT taskUUID from taskshared'
+        'SELECT count(taskUUID)as usersShared, taskUUID from taskshared group by taskUUID;'
       )
       db.end()
       return taskshared
@@ -18,12 +18,26 @@ export class MySQLTaskShareRepository {
     }
   }
 
-  getOne = async (uuid) => {
+  getResponsible = async (taskUUID)=>{
+    try {
+      const db = await this.MySQL.createConnection()
+      const [[userResponsible]] = await db.query(
+        'SELECT responsible, uuid, userUUID from taskshared WHERE taskUUID = ? and responsible = true;',
+      [taskUUID])
+      db.end()
+      return userResponsible
+    } catch (e) {
+      console.log(e)
+      throw Error('Error Desconocido')
+    }
+  }
+
+  getRelation = async (userUUID, taskUUID) => {
     try {
       const db = await this.MySQL.createConnection()
       const [[taskShared]] = await db.query(
-        'SELECT * FROM taskshared WHERE uuid = ?',
-        [uuid]
+        'SELECT responsible, uuid, taskUUID, userUUID FROM taskshared WHERE taskUUID = ? AND userUUID = ?;',
+        [taskUUID, userUUID]
       )
       return taskShared
     } catch (error) {
@@ -31,12 +45,12 @@ export class MySQLTaskShareRepository {
     }
   }
 
-  getByTask = async (id) => {
+  getByTask = async (taskUUID) => {
     try {
       const db = await this.MySQL.createConnection()
       const [usersShared] = await db.query(
-        'SELECT * FROM tasksharedview WHERE taskID = ?',
-        [id]
+        'SELECT userUUID, responsible FROM taskshared WHERE taskUUID = ?;',
+        [taskUUID]
       )
       db.end()
       return usersShared
@@ -45,19 +59,6 @@ export class MySQLTaskShareRepository {
     }
   }
 
-  getByUser = async (id) => {
-    try {
-      const db = await this.MySQL.createConnection()
-      const usersShared = await db.query(
-        'SELECT * FROM tasksharedview WHERE sharedUserID = ?',
-        [id]
-      )
-      db.end()
-      return usersShared
-    } catch (error) {
-      throw new Error(error.sqlMessage)
-    }
-  }
 
   createOne = async (taskshareEntity) => {
     try {
@@ -76,39 +77,52 @@ export class MySQLTaskShareRepository {
     }
   }
 
-  updateOne = async (id, responsible) => {
+  updateResponsible = async (userUUID, isResponsible) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'UPDATE taskshared SET responsible = ? WHERE id = ?',
-        [responsible, id]
+        'UPDATE taskshared SET responsible = ? WHERE userUUID = ?;',
+        [isResponsible, userUUID]
       )
       await db.end()
-
+     
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo Actualizar')
       }
-      return id
     } catch (error) {
-      console.log(error)
       throw new Error(error.sqlMessage)
     }
   }
 
-  deleteOne = async (uuid) => {
+  stopSharewithUser = async (taskUUID, userUUID) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'DELETE FROM taskshared WHERE uuid=?',
-        [uuid]
+        'DELETE FROM taskshared WHERE taskUUID=? AND userUUID = ?;',
+        [taskUUID,userUUID]
       )
       await db.end()
       if (ResultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo borrar')
       }
-      return uuid
     } catch (error) {
       throw new Error(error.sqlMessage)
     }
   }
+
+stopShareTask = async (taskUUID) => {
+  try {
+    const db = await this.MySQL.createConnection()
+    const [ResultSetHeader] = await db.query(
+      'DELETE FROM taskshared WHERE taskUUID=?;',
+      [taskUUID]
+    )
+    await db.end()
+    if (ResultSetHeader.affectedRows === 0) {
+      throw new Error('No se pudo borrar')
+    }
+  } catch (error) {
+    throw new Error(error.sqlMessage)
+  }
+}
 }

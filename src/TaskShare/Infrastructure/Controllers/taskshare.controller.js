@@ -3,8 +3,49 @@ export class TaskShareController {
     this.taskshareUseCases = TaskShareUseCases
   }
 
-  getAll = async (req, res) => {
-    const TasksShared = await this.taskshareUseCases.getTaskShared(req.query)
+  shareTask = async (req, res, next) => {
+    const { taskUUID, usersUUIDS, responsible } = req.body
+    const taskShared = await this.taskshareUseCases.shareTask(
+      taskUUID,
+      usersUUIDS
+    )
+    if (taskShared instanceof Error)
+      return res.status(400).json(taskShared.message)
+    if (!responsible) return res.status(201).json(taskShared)
+    req.taskShared = taskShared
+    next()
+  }
+
+  toDoResponsible = async (req, res) => {
+    const { responsible, taskUUID } = req.body
+    const userResponsible = await this.taskshareUseCases.toDoResponsible(
+      responsible,
+      taskUUID
+    )
+    if (userResponsible instanceof Error)
+      return res.status(400).json(userResponsible.message)
+    res.status(200).json({ userResponsible, ...req.taskShared })
+  }
+
+  stopSharingUser = async (req, res) => {
+    const useruuidDeleted = await this.taskshareUseCases.stopSharingUser(
+      req.params.task,
+      req.params.user
+    )
+    if (useruuidDeleted instanceof Error)
+      return res.status(400).json(useruuidDeleted.message)
+    return res.status(200).json(useruuidDeleted)
+  }
+
+  stopSharingAllUser = async (req, res) => {
+    const useruuidDeleted = await this.taskshareUseCases.stopSharingTask(
+      req.params.task
+    )
+    return res.status(200).json(useruuidDeleted)
+  }
+
+  getSharedTasks = async (req, res) => {
+    const TasksShared = await this.taskshareUseCases.getTaskShared()
     if (TasksShared instanceof Error)
       return res
         .status(404)
@@ -19,25 +60,7 @@ export class TaskShareController {
     if (UsersSharedByTask instanceof Error)
       return res
         .status(404)
-        .json('No se encontrar Usuarios Compartidos de Esta Tarea')
+        .json('No se encontraron Usuarios Compartidos de Esta Tarea')
     res.status(200).json(UsersSharedByTask)
   }
-
-  shareTask = async (req, res) => {
-    const response = await this.taskshareUseCases.shareTask({
-      task: req.params.id,
-      ...req.body
-    })
-    if (response instanceof Error)
-      return res.status(400).json('No se dejo de compartir la tarea')
-    return res.status(201).json(response)
-  }
-
-  stopSharing = async (req, res) => {
-    const useruuidDeleted = await this.taskshareUseCases.stopSharing(
-      req.params.id
-    )
-    return res.status(200).json(useruuidDeleted)
-  }
-
 }

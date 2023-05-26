@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { TagTaskUseCases } from '../../Application/tagtask.usecases.js'
 import { TagTaskController } from '../Controllers/tagtask.controller.js'
 import { MySQLTagTaskRepository } from '../Repository/tagtask.mysql.repository.js'
-import { taskUseCases } from '../../../Task/Infraestructure/Routes/task.routes.js'
+import { taskUseCases } from '../../../Task/Infraestructure/Dependencies/task.dependencies.js'
 import { tagUseCases } from '../../../Tag/Infrastructure/Routes/tag.routes.js'
 // import { MocktagtaskRepository } from '../Repository/tagtask.mock.respository.js'
 // Crear instancia del repositorio de MySQL para usuarios
