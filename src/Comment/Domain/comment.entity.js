@@ -1,4 +1,4 @@
-export class CommentEntity {
+export default class CommentEntity {
   constructor(uuid, taskUUID, userUUID, comment) {
     this.uuid = uuid
     this.taskUUID = taskUUID

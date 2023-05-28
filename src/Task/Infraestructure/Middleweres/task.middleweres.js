@@ -1,10 +1,4 @@
-import { commentUseCases } from '../../../Comment/Infraestructure/Routes/comment.routes.js'
-import { fileUseCases } from '../../../File/Infrastructure/Routes/file.routes.js'
-import { tagtaskUseCases } from '../../../TagTask/Infrastructure/Routes/tagtask.routes.js'
-import { taskshareUseCases } from '../../../TaskShare/Infrastructure/Routes/taskshare.routes.js'
-import { taskUseCases } from '../Routes/task.routes.js'
-
-class TaskMiddleweres {
+export class TaskMiddleweres {
   constructor(
     tagsTaskUseCases,
     taskshareUseCases,
@@ -37,11 +31,3 @@ class TaskMiddleweres {
     next()
   }
 }
-
-export const taskMiddleweres = new TaskMiddleweres(
-  taskUseCases,
-  tagtaskUseCases,
-  taskshareUseCases,
-  commentUseCases,
-  fileUseCases
-)

@@ -1,5 +1,9 @@
 import { Router } from 'express'
-import { taskController } from '../Dependencies/task.dependencies.js'
+
+import {
+  taskController,
+  taskMiddleweres
+} from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
 const taskRouter = Router()
 taskRouter.get('/', taskController.getTasks, taskController.tasksPonderated)
@@ -8,6 +12,7 @@ taskRouter.get('/:id', taskController.getTask)
 taskRouter.post(
   '/',
   taskController.createTask,
+  taskMiddleweres.commentsTaskMiddlewere,
 
   taskController.returnCreatedFullTask
 )

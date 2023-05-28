@@ -1,16 +1,5 @@
 import { Router } from 'express'
-import { UserUseCases } from '../../Application/user.usecases.js'
-import { UserController } from '../Controllers/user.controller.js'
-import { MySQLUserRepository } from '../Repository/user.mysql.repository.js'
-// import { MockUserRepository } from '../Repository/user.mock.respository.js'
-// Crear instancia del repositorio de MySQL para usuarios
-const userRepository = new MySQLUserRepository()
-
-// Crear instancias de los casos de uso y pasar el repositorio como dependencia
-export const userUseCases = new UserUseCases(userRepository)
-
-// Crear instancia del controlador y pasar los casos de uso como dependencia
-export const userController = new UserController(userUseCases)
+import { userController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
 // Crear instancia del router de usuarios
 const userRouter = Router()

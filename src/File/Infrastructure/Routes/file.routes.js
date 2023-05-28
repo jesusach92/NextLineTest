@@ -1,17 +1,5 @@
 import { Router } from 'express'
-import { FileUseCases } from '../../Application/file.usecases.js'
-import { FileController } from '../Controllers/file.controller.js'
-import { MySQLFileRepository } from '../Repository/file.mysql.repository.js'
-import { StoregeFileRepository } from '../Repository/file.storage.repository.js'
-// import { MockfileRepository } from '../Repository/file.mock.respository.js'
-// Crear instancia del repositorio de MySQL para usuarios
-const fileRepository = new MySQLFileRepository()
-const storageRepository = new StoregeFileRepository()
-// Crear instancias de los casos de uso y pasar el repositorio como dependencia
-export const fileUseCases = new FileUseCases(fileRepository, storageRepository)
-
-// Crear instancia del controlador y pasar los casos de uso como dependencia
-const fileController = new FileController(fileUseCases)
+import { fileController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
 // Crear instancia del router de usuarios
 const fileRouter = Router()
