@@ -1,8 +1,0 @@
-export * from './Application/file.usecases'
-export * from './Application/file.validator'
-export * from './Domain/file.entity.js'
-export * from './Infrastructure/Controllers/file.controller'
-export * from './Infrastructure/Repository/file.mysql.repository'
-export * from './Infrastructure/Repository/file.storage.repository'
-export { default as fileRoutes } from './Infrastructure/Routes/file.routes'
-export * from './Infrastructure/db/MySQL/myslq.config'

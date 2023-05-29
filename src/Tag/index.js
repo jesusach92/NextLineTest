@@ -1,7 +1,0 @@
-export * from './Application/tag.usecases'
-export { default as tagEntity } from './Domain/tag.entity'
-export * from './Infrastructure/Controllers/tag.controller'
-export * from './Infrastructure/Repository/tag.mock.respository'
-export * from './Infrastructure/Repository/tag.mysql.repository'
-export { default as tagRoutes } from './Infrastructure/Routes/tag.routes'
-export * from './Infrastructure/db/MySQL/myslq.config'

@@ -3,5 +3,19 @@
   "singleQuote": true,
   "semi": false,
   "bracketSameLine": true,
-  "trailingComma": "none"
+  "trailingComma": "es5",
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "plugins": [["prettier-plugin-import-extensions", { "importExtensions": [".js", ".jsx"] }]]
+      }
+    },
+    {
+      "files": "*.ts",
+      "options": {
+        "plugins": [["prettier-plugin-import-extensions", { "importExtensions": [".ts", ".tsx"] }]]
+      }
+    }
+  ]
 }
