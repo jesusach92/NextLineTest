@@ -1,7 +1,0 @@
-export { default as CommentUsecases } from './Application/comment.usecases.js'
-export { default as CommentEntity } from './Domain/comment.entity.js'
-export { default as CommentController } from './Infraestructure/Controllers/comment.controller.js'
-export { default as CommentMockrRepository } from './Infraestructure/Repository/comment.mock.repository.js'
-export { default as CommentMySQLRepository } from './Infraestructure/Repository/comment.mysql.repository.js'
-export { default as Commentroutes } from './Infraestructure/Routes/comment.routes.js'
-export * from './Infraestructure/db/MySQL/myslq.config.js'

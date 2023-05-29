@@ -2,11 +2,9 @@ import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
 import fileupload from 'express-fileupload'
-import GeneralRouter from './1Shared/Infrastructure/Routes/index.routes.js'
-
+import GeneralRouter from './Shared/Infrastructure/Routes/index.routes.js'
 export default class Application {
   constructor(port) {
-    this.setup()
     this.port = port
     this.app = express()
     this.app.use(fileupload({ limits: { fileSize: 50 * 1024 * 1024 } }))
