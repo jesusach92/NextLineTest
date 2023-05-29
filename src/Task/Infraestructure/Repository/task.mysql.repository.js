@@ -29,6 +29,7 @@ export default class MySQLTaskRepository {
         throw new Error('No hay Tareas Publicas')
       return tasks
     } catch (error) {
+      console.log(error.sqlMessage)
       throw new Error(error.sqlMessage)
     }
   }

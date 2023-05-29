@@ -32,23 +32,25 @@ export default class FileUseCases {
   }
 
   uploadFile = async ({ body, files = null, userSession }) => {
-    console.log(files)
     try {
-      const { name = `${userSession.userUUID}-${Date.now()}` } = body
-      const format = this.fileValidator.validateFile(files.file)
-      const url = await this.storageRepository.uploadFile({
-        name,
-        ...files.file,
-      })
-      const uuid = this.uuidUtils.generate()
-      const File = new FileEntity({
-        uuid,
-        name,
-        format,
-        url,
-      })
-      await this.fileRepository.createOne(File.generateFile())
-      return File.generateFile()
+      if (files) {
+        const { name = `${userSession.userUUID}-${Date.now()}` } = body
+        const format = this.fileValidator.validateFile(files.file)
+        const url = await this.storageRepository.uploadFile({
+          name,
+          ...files.file,
+        })
+        const uuid = this.uuidUtils.generate()
+        const File = new FileEntity({
+          uuid,
+          name,
+          format,
+          url,
+        })
+        await this.fileRepository.createOne(File.generateFile())
+        return File.generateFile()
+      }
+      return new Error('No hay archivo para subir')
     } catch (error) {
       console.log(error)
       return new Error('No se logro cargar el Archivo')

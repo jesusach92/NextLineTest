@@ -20,7 +20,12 @@ export default class TaskController {
   tasksPonderated = async (req, res) => {
     const tasks = req.tasks
     if (tasks instanceof Error) return res.status(400).json(tasks.message)
-    res.status(200).json(tasks)
+
+    const tasksPonderated = await this.taskUseCases.tasksPonderation({
+      tasks,
+      query: req.query,
+    })
+    res.status(200).json(tasksPonderated)
   }
 
   getTask = async (req, res) => {

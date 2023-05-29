@@ -1,39 +1,72 @@
 export default class TaskMiddleweres {
   constructor(
-    tagTaskUseCases,
+    tagtaskUseCases,
     taskshareUseCases,
     commentUseCases,
     fileUseCases
   ) {
-    this.tagTaskUseCases = tagTaskUseCases
+    this.tagtaskUseCases = tagtaskUseCases
     this.taskshareUseCases = taskshareUseCases
     this.commentUseCases = commentUseCases
     this.fileUseCases = fileUseCases
   }
 
   sharedUsersTaskMiddlewere = async (req, res, next) => {
-    req.task = { ...req.task, sharedUser: [1, 2, 3] }
-    console.log(req.task)
-
-    console.log('shared')
+    const { uuid } = req.task
+    const taskUUID = uuid
+    const { usersUUIDS = null } = req.body
+    const usersShared = await this.taskshareUseCases.shareTask(
+      taskUUID,
+      usersUUIDS
+    )
+    if (usersShared instanceof Error) {
+      req.task = { ...req.task, users: usersShared.message }
+      next()
+    }
+    req.task = { ...req.task, usersShared }
     next()
   }
 
   tagsTaskMiddlewere = async (req, res, next) => {
-    req.task = { ...req.task, tags: ['MySQL', 'SQLServer'] }
-    console.log('Tags')
+    const taskUUID = req.task.uuid
+    const { tags } = req.body
+    const tagtask = await this.tagtaskUseCases.assignTagstoTask({
+      taskUUID,
+      tags,
+    })
+    if (tagtask instanceof Error) {
+      req.task = { ...req.task, tagtask: tagtask.message }
+      next()
+    }
+    req.task = { ...req.task, tagtask }
     next()
   }
 
   commentsTaskMiddlewere = async (req, res, next) => {
-    req.task = { ...req.task, comments: 'Tarea Urgente Solucionar' }
-    console.log('comments')
+    const { comment = null } = req.body
+    const taskUUID = req.task.uuid
+    const { userUUID } = req.userSession
+    const newcomment = await this.commentUseCases.createcomment({
+      taskUUID,
+      userUUID,
+      comment,
+    })
+
+    if (newcomment instanceof Error) {
+      req.task = { ...req.task, comment: newcomment.message }
+      next()
+    }
+    req.task = { ...req.task, comment: newcomment }
     next()
   }
 
   filesTaskMiddlewere = async (req, res, next) => {
-    req.task = { ...req.task, file: 'Archivo1' }
-    console.log('files')
+    const File = await this.fileUseCases.uploadFile(req)
+    if (File instanceof Error) {
+      req.task = { ...req.task, File: File.message }
+      next()
+    }
+    req.task = { ...req.task, File }
     next()
   }
 }

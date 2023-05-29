@@ -82,7 +82,11 @@ export const taskController = new TaskController(taskUseCases)
 // Comments
 
 const commentRepository = new CommentMySQLRepository()
-const commentUseCases = new CommentUsecases(commentRepository)
+const commentUseCases = new CommentUsecases(
+  commentRepository,
+  userUseCases,
+  taskUseCases
+)
 export const commentController = new CommentController(commentUseCases)
 
 // Tags
@@ -119,4 +123,9 @@ const taskshareUseCases = new TaskShareUsecases(
 export const taskshareController = new TaskShareController(taskshareUseCases)
 
 // Task Middleweres
-export const taskMiddleweres = new TaskMiddleweres(tagtaskUseCases)
+export const taskMiddleweres = new TaskMiddleweres(
+  tagtaskUseCases,
+  taskshareUseCases,
+  commentUseCases,
+  fileUseCases
+)

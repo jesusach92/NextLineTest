@@ -6,7 +6,11 @@ import {
 
 const taskRouter = Router()
 taskRouter.get('/', taskController.getTasks, taskController.tasksPonderated)
-taskRouter.get('/search?', taskController.tasksPonderated)
+taskRouter.get(
+  '/search?',
+  taskController.getTasks,
+  taskController.tasksPonderated
+)
 taskRouter.get('/:id', taskController.getTask)
 taskRouter.post(
   '/',

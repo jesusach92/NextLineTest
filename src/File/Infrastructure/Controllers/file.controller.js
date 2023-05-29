@@ -17,7 +17,6 @@ export default class FileController {
 
   uploadFile = async (req, res) => {
     const File = await this.FileUseCases.uploadFile(req)
-    console.log(req.body)
     if (File instanceof Error) return res.status(400).json(File.message)
     return res.status(201).json(File)
   }
