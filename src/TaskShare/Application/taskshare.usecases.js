@@ -1,111 +1,86 @@
 import { PasswordUtil } from '../../Shared/Infrastructure/utils/password.util.js'
 import { UUIDUtils } from '../../Shared/Infrastructure/utils/uuids.util.js'
-import { TaskShareEntity } from '../Domain/taskShare.entity.js'
+import TaskShareEntity from '../Domain/taskShare.entity.js'
 
-export class TaskShareUseCases {
-  constructor(taskshareRepository, usersUseCases, taskUseCases) {
+export default class TaskShareUseCases {
+  constructor(taskshareRepository, userUseCases, taskUseCases) {
     this.taskshareRepository = taskshareRepository
-    this.usersUseCases = usersUseCases
+    this.userUseCases = userUseCases
     this.taskUseCases = taskUseCases
     this.uuidUtils = new UUIDUtils()
     this.passwordUtils = new PasswordUtil()
   }
 
-  getTaskShared = async (params) => {
+  /**
+   * Share a task with users.
+   * @param {string} taskUUID - Task UUID.
+   * @param {string[]} usersUUIDS - Array of user UUIDs to share the task with.
+   * @returns {Object|Error} - Object with the message and shared tasks, or an Error if sharing fails.
+   */
+  shareTask = async (taskUUID, usersUUIDS) => {
     try {
-      const TasksShared = await this.taskshareRepository.getAllTasksIDS(params)
-      const TasksSharedUUID = await this.resolveArrayPromises(
-        await this.getTaskSharedPromises(TasksShared)
-      )
-      return { Total: TasksSharedUUID.length, TasksSharedUUID }
-    } catch (error) {
-      return new Error('Error Inesperado')
-    }
-  }
-
-  shareTask = async ({ usersUUIDS, UserResponsible, uuidTask }) => {
-    try {
-      const task = await this.taskUseCases.findTask(uuidTask)
-      if (task.isPublic) {
-        const sharedTask = await this.getSharedTaskResolved(
-          usersUUIDS,
-          UserResponsible,
-          task
+      if (!Array.isArray(usersUUIDS) || usersUUIDS.length === 0)
+        return new Error(
+          'You must provide an array of users with at least 1 user to share with'
         )
-        return sharedTask
+      await this.taskUseCases.findTask(taskUUID)
+      const sharedTask = await this.shareTaskLoop(usersUUIDS, taskUUID)
+      if (!Array.isArray(sharedTask) || sharedTask.length === 0)
+        return new Error('Failed to share the task with all users')
+
+      return {
+        Message: `Task:${taskUUID} shared with ${sharedTask.length} users`,
+        sharedTask,
       }
-      return new Error('La tarea no es Publica')
     } catch (error) {
-      return new Error('No se Puedo Compartir la Tarea ')
+      return new Error('Failed to share the task')
     }
   }
 
-  getTaskSharedPromises = async (TasksShared) => {
+  /**
+   * Share the task with multiple users in a loop.
+   * @param {string[]} usersUUIDS - Array of user UUIDs.
+   * @param {string} taskUUID - Task UUID.
+   * @returns {Promise<Object[]|Error>} - Array of shared tasks or an Error if sharing fails.
+   */
+  shareTaskLoop = async (usersUUIDS, taskUUID) => {
     try {
-      const TasksDataArray = TasksShared.map(async (Task) => {
-        return await this.taskUseCases.findTask(Task.taskUUID)
-      })
-      return TasksDataArray
-    } catch (error) {
-      return new Error('Error Inesperado')
-    }
-  }
-
-  resolveArrayPromises = async (ArrayPromises) => {
-    try {
-      const PromiseResolved = await Promise.all(ArrayPromises)
-        .then((values) => values)
-        .catch((e) => e)
-
-      if (PromiseResolved instanceof Error) throw new Error('Error Inesperado')
-      return PromiseResolved
-    } catch (error) {
-      throw new Error('Error Inesperado')
-    }
-  }
-
-  getSharedTaskResolved = async (usersUUIDSArray, UserResponsible, Task) => {
-    try {
-      const sharedTaskPromises = usersUUIDSArray.map(async (useruuid) => {
-        const user = await this.usersUseCases.findUser(useruuid)
-        const isReponsible = useruuid === UserResponsible
-        const taskUserShared = await this.shareTaskperUser(
-          user.id,
-          user.uuid,
-          isReponsible,
-          Task.id,
-          Task.uuid
-        )
-        if (taskUserShared instanceof Error)
-          throw new Error(
-            'No se logro compartir la tearea con el usuario: ' + useruuid
+      const sharedTask = await Promise.all(
+        usersUUIDS.map(async (useruuid) => {
+          const user = await this.userUseCases.findUser(useruuid)
+          const taskUserShared = await this.shareTaskperUser(
+            user.uuid,
+            taskUUID
           )
-        return taskUserShared
-      })
-      return await this.resolveArrayPromises(sharedTaskPromises)
+          if (taskUserShared instanceof Error)
+            throw new Error(
+              'Failed to share the task with the user: ' + useruuid
+            )
+          return taskUserShared
+        })
+      )
+        .then((task) => task)
+        .catch((error) => {
+          throw new Error(error.message)
+        })
+      return sharedTask
     } catch (error) {
-      console.log('sharedTaskPromises')
-      return new Error('No se logro compartir la tarea')
+      return new Error(error.message)
     }
   }
 
-  shareTaskperUser = async (
-    UserID,
-    userUUID,
-    isResponsible,
-    taskID,
-    taskUUID
-  ) => {
+  /**
+   * Share the task with a user.
+   * @param {string} userUUID - User UUID.
+   * @param {string} taskUUID - Task UUID.
+   * @returns {Object|Error} - Shared task object or an Error if sharing fails.
+   */
+  shareTaskperUser = async (userUUID, taskUUID) => {
     try {
-      const taskshareEntity = this.generateEntity(
-        UserID,
-        userUUID,
-        taskID,
-        taskUUID,
-        isResponsible
-      )
+      const uuid = this.uuidUtils.generate()
+      const taskshareEntity = new TaskShareEntity(userUUID, taskUUID, uuid)
       const taskshare = await this.taskshareRepository.createOne(
-        taskshareEntity
+        taskshareEntity.generateTaskShare()
       )
       return taskshare
     } catch (error) {
@@ -113,66 +88,144 @@ export class TaskShareUseCases {
     }
   }
 
-  generateEntity = (UserID, userUUID, taskID, taskUUID, isResponsible) => {
-    const uuid = this.uuidUtils.generate()
-    const taskshareEntity = new TaskShareEntity(
-      UserID,
-      userUUID,
-      taskID,
-      taskUUID,
-      isResponsible,
-      uuid
-    )
-    return taskshareEntity.generateTaskShare()
+  /**
+   * Assign a user as the responsible for a task.
+   * @param {string} userUUID - User UUID.
+   * @param {string} taskUUID - Task UUID.
+   * @returns {string|Error} - Success message or an Error if the assignment fails.
+   */
+  toDoResponsible = async (userUUID, taskUUID) => {
+    try {
+      const taskSharedRelation = await this.taskshareRepository.getRelation(
+        userUUID,
+        taskUUID
+      )
+      if (!taskSharedRelation) {
+        return new Error(`The task is not shared with the user: ${userUUID}`)
+      }
+      const userResponsible = await this.taskshareRepository.getResponsible(
+        taskUUID
+      )
+      if (userResponsible && userResponsible.userUUID !== userUUID) {
+        await this.taskshareRepository.updateResponsible(
+          userResponsible.userUUID,
+          false
+        )
+        await this.taskshareRepository.updateResponsible(userUUID, true)
+        return `Successfully assigned user ${userUUID} as responsible`
+      }
+      await this.taskshareRepository.updateResponsible(userUUID, true)
+      return `Successfully assigned user ${userUUID} as responsible`
+    } catch (error) {
+      return new Error(error.message)
+    }
   }
 
-  stopSharing = async (uuid) => {
+  /**
+   * Stop sharing a task with a user.
+   * @param {string} taskUUID - Task UUID.
+   * @param {string} userUUID - User UUID.
+   * @returns {string|Error} - Success message or an Error if stopping the sharing fails.
+   */
+  stopSharingUser = async (taskUUID, userUUID) => {
     try {
-      const uuidDeleted = await this.taskshareRepository.deleteOne(uuid)
-      return uuidDeleted
+      await this.taskshareRepository.stopSharewithUser(taskUUID, userUUID)
+      return `Task ${taskUUID} is no longer shared with the user ${userUUID}`
     } catch (error) {
       return error
     }
   }
 
-  toDoResponsible = async ({ uuid }) => {
+  /**
+   * Stop sharing a task with all users.
+   * @param {string} taskUUID - Task UUID.
+   * @returns {string|Error} - Success message or an Error if stopping the sharing fails.
+   */
+  stopSharingTask = async (taskUUID) => {
     try {
-      const taskSharedRelation = await this.taskshareRepository.getOne(uuid)
-      if (!taskSharedRelation) {
-        return new Error('La terea no Esta Compartida')
-      }
-      const sharedUsers = await this.AllUsersByTask(taskSharedRelation.taskID)
-
-      if (!Array.isArray(sharedUsers) && sharedUsers.length === 0) {
-        return new Error('No hay usuarios Compartidos')
-      }
-      const responsible = this.findResponsible(sharedUsers)
-      if (responsible.uuid !== uuid) {
-        await this.taskshareRepository.updateOne(responsible.id, false)
-        await this.taskshareRepository.updateOne(taskSharedRelation.id, true)
-        return taskSharedRelation
-      }
-      return sharedUsers
-    } catch (e) {
-      return new Error('Error Desconocido')
+      await this.taskshareRepository.stopShareTask(taskUUID)
+      return `Task ${taskUUID} is no longer shared with all users.`
+    } catch (error) {
+      return error
     }
   }
 
-  findResponsible = (sharedUsers) => {
-    return sharedUsers.find((user) => {
-      return user.responsible === 1
-    })
+  /**
+   * Get all users shared with a task.
+   * @param {string} taskUUID - Task UUID.
+   * @returns {Object[]|Error} - Array of shared users or an Error if there are no shared users.
+   */
+  AllUsersByTask = async (taskUUID) => {
+    try {
+      const sharedUsers = await this.taskshareRepository.getByTask(taskUUID)
+      console.log(sharedUsers)
+      if (!Array.isArray(sharedUsers) || sharedUsers.length === 0)
+        return new Error(`There are no shared users for the task: ${taskUUID}`)
+      const users = await this.resolveArrayPromises(
+        sharedUsers.map(async (user) => {
+          return {
+            isResponsible: user.responsible,
+            user: await this.userUseCases.findUser(user.userUUID),
+          }
+        })
+      )
+      return users
+    } catch (error) {
+      return new Error(error)
+    }
   }
 
-  AllUsersByTask = async (uuid) => {
-    console.log(uuid)
+  /**
+   * Get all shared tasks.
+   * @returns {Object|Error} - Object containing the total count and array of shared task UUIDs, or an Error if retrieval fails.
+   */
+  getTaskShared = async () => {
     try {
-      const { id } = await this.taskUseCases.findTask(uuid)
-
-      const sharedUsers = await this.taskshareRepository.getByTask(id)
-      return sharedUsers
+      const TasksShared = await this.taskshareRepository.getAllTasksShared()
+      const TasksSharedUUID = await this.resolveArrayPromises(
+        await this.getTaskSharedPromises(TasksShared)
+      )
+      return { Total: TasksSharedUUID.length, TasksSharedUUID }
     } catch (error) {
-      return new Error('Error Inesperado')
+      return new Error('Unexpected error')
+    }
+  }
+
+  /**
+   * Generate an array of promises to fetch task and user data for shared tasks.
+   * @param {Object[]} TasksShared - Array of shared tasks.
+   * @returns {Promise<Object[]|Error>} - Array of promises for task and user data, or an Error if retrieval fails.
+   */
+  getTaskSharedPromises = async (TasksShared) => {
+    try {
+      const TasksDataArray = TasksShared.map(async (Task) => {
+        return {
+          UsersShared: Task.usersShared,
+          Task: await this.taskUseCases.findTask(Task.taskUUID),
+        }
+      })
+      return TasksDataArray
+    } catch (error) {
+      return new Error(error.message)
+    }
+  }
+
+  /**
+   * Resolve an array of promises.
+   * @param {Promise[]} ArrayPromises - Array of promises to resolve.
+   * @returns {Promise<any[]|Error>} - Resolved array of promises or an Error if resolution fails.
+   */
+  resolveArrayPromises = async (ArrayPromises) => {
+    try {
+      const PromiseResolved = await Promise.all(ArrayPromises)
+        .then((values) => values)
+        .catch((e) => e)
+
+      if (PromiseResolved instanceof Error)
+        throw new Error(PromiseResolved.message)
+      return PromiseResolved
+    } catch (error) {
+      throw new Error(error.message)
     }
   }
 }

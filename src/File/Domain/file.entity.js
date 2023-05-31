@@ -1,32 +1,29 @@
-export class FileEntity {
-  constructor({
-    uuid,
-    title,
-    description,
-    status,
-    dueDate,
-    isPublic,
-    createdBy
-  }) {
+/**
+ * Represents a File entity.
+ */
+export default class FileEntity {
+  /**
+   * Constructor of FileEntity.
+   * @param {Object} fileData - File data.
+   */
+  constructor({ uuid, name, format, url }) {
     this.uuid = uuid
-    this.title = title
-    this.description = description
-    this.status = status
-    this.isPublic = isPublic
-    this.createdBy = createdBy
-    this.dueDate = dueDate
+    this.name = name
+    this.format = format
+    this.url = url
   }
 
-  generateTask = () => {
-    const Task = {
+  /**
+   * Generates a file object with the entity's properties.
+   * @returns {Object} - Frozen file object.
+   */
+  generateFile = () => {
+    const File = {
       uuid: this.uuid,
-      title: this.title,
-      description: this.description,
-      status: this.status,
-      isPublic: this.isPublic,
-      createdBy: this.createdBy,
-      dueDate: this.dueDate
+      name: this.name,
+      format: this.format,
+      url: this.url,
     }
-    return Object.freeze(Task)
+    return Object.freeze(File)
   }
 }

@@ -2,15 +2,15 @@ import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
 export class TokenUtil {
-  creteToken = async (TokenSessionEntity) => {
+  createToken = async (TokenSessionEntity) => {
     try {
       const token = jwt.sign(
         {
-          ...TokenSessionEntity
+          ...TokenSessionEntity,
         },
         process.env.PASS_JWT,
         {
-          expiresIn: '150h'
+          expiresIn: '150h',
         }
       )
       return token
@@ -19,7 +19,7 @@ export class TokenUtil {
     }
   }
 
-  verifytoken = async ({ token }) => {
+  verifyToken = async ({ token }) => {
     try {
       return jwt.verify(token, process.env.PASS_JWT)
     } catch (error) {

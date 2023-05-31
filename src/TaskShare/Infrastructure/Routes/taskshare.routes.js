@@ -1,60 +1,39 @@
 import { Router } from 'express'
-import { TaskShareUseCases } from '../../Application/taskshare.usecases.js'
-import { TaskShareController } from '../Controllers/taskshare.controller.js'
-import { MySQLTaskShareRepository } from '../Repository/taskshare.mysql.repository.js'
-import { userUseCases } from '../../../User/Infrastructure/Routes/user.routes.js'
-import { taskUseCases } from '../../../Task/Infraestructure/Routes/task.routes.js'
+import { taskshareController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
-// Crear instancia del repositorio de MySQL para usuarios
-const taskshareRepository = new MySQLTaskShareRepository()
-
-// Crear instancias de los casos de uso y pasar el repositorio como dependencia
-export const taskshareUseCases = new TaskShareUseCases(
-  taskshareRepository,
-  userUseCases,
-  taskUseCases
-)
-
-// Crear instancia del controlador y pasar los casos de uso como dependencia
-const taskshareController = new TaskShareController(taskshareUseCases)
-
-// Crear instancia del router de usuarios
+// Create router instance
 const taskshareRouter = Router()
 
-// Definir rutas de usuarios y asignar los métodos del controlador
+// Route for sharing a task and assigning responsible user
+// POST /
+// Request body: { taskUUID, usersUUIDS, responsible }
+taskshareRouter.post(
+  '/',
+  taskshareController.shareTask,
+  taskshareController.toDoResponsible
+)
 
-/**
- * Obtener todos los usuarios compartiendo tareas
- * Ruta: GET '/'
- */
+// Route for stopping sharing a task with a specific user
+// DELETE /task/:task/user/:user
+taskshareRouter.delete(
+  '/task/:task/user/:user',
+  taskshareController.stopSharingUser
+)
 
-taskshareRouter.get('/tasks', taskshareController.getAll)
+// Route for stopping sharing a task with all users
+// DELETE /task/:task
+taskshareRouter.delete('/task/:task', taskshareController.stopSharingAllUser)
 
-taskshareRouter.get('/tasks/:id', taskshareController.getAllUsersShared)
+// Route for updating responsible user for a task
+// PATCH /
+taskshareRouter.patch('/', taskshareController.toDoResponsible)
 
-/**
- * Obtener tareas compartidas por parámetros de consulta
- * Ruta: GET '/search?'
- */
-taskshareRouter.get('/search?', taskshareController.getAll)
+// Route for getting all shared tasks
+// GET /
+taskshareRouter.get('/', taskshareController.getSharedTasks)
 
-/**
- * Compartir una nueva tarea
- * Ruta: POST '/'
- */
-taskshareRouter.post('/', taskshareController.shareTask)
+// Route for getting all users shared for a specific task
+// GET /task/:id
+taskshareRouter.get('/task/:id', taskshareController.getAllUsersShared)
 
-/**
- * Actualizar una tarea compartida
- * Ruta: PATCH '/'
- */
-taskshareRouter.patch('/', taskshareController.updateOne)
-
-/**
- * Eliminar una tarea compartida por su ID
- * Ruta: DELETE '/:id'
- */
-taskshareRouter.delete('/:id', taskshareController.deleteOne)
-
-// Exportar el router de Tareas Compartidas
 export default taskshareRouter

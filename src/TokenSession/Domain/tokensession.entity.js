@@ -4,10 +4,14 @@ export default class TokenSessionEntity {
     this.userType = userType
   }
 
+  /**
+   * Generates a token session entity.
+   * @returns {Object} - Token session entity.
+   */
   generateTokenSessionEntity = () => {
     const TokenSessionEntity = {
       userUUID: this.userUUID,
-      userType: this.userType
+      userType: this.userType,
     }
     return Object.freeze(TokenSessionEntity)
   }

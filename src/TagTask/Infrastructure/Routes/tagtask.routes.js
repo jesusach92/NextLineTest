@@ -1,31 +1,13 @@
 import { Router } from 'express'
-import { TagTaskUseCases } from '../../Application/tagtask.usecases.js'
-import { TagTaskController } from '../Controllers/tagtask.controller.js'
-import { MySQLTagTaskRepository } from '../Repository/tagtask.mysql.repository.js'
-import { taskUseCases } from '../../../Task/Infraestructure/Routes/task.routes.js'
-import { tagUseCases } from '../../../Tag/Infrastructure/Routes/tag.routes.js'
-// import { MocktagtaskRepository } from '../Repository/tagtask.mock.respository.js'
-// Crear instancia del repositorio de MySQL para usuarios
+import { tagtaskController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
-const tagtaskRepository = new MySQLTagTaskRepository()
-
-// Crear instancias de los casos de uso y pasar el repositorio como dependencia
-export const tagtaskUseCases = new TagTaskUseCases(
-  tagtaskRepository,
-  taskUseCases,
-  tagUseCases
-)
-
-// Crear instancia del controlador y pasar los casos de uso como dependencia
-const tagtaskController = new TagTaskController(tagtaskUseCases)
-
-// Crear instancia del router de usuarios
+// Create an instance of the tag-task router
 const tagtaskRouter = Router()
 
-// Definir rutas de usuarios y asignar los métodos del controlador
-tagtaskRouter.get('/task/:id', tagtaskController.getTagsTask) // Obtener todos los usuarios
-tagtaskRouter.post('/', tagtaskController.createOne) // Crear un nuevo usuario
-tagtaskRouter.delete('/:id', tagtaskController.deleteOne) // Eliminar un usuario por su UUID
+// Define routes for tag-task and assign the controller methods
+tagtaskRouter.get('/task/:id', tagtaskController.getTagsTask) // Get all tags of a task
+tagtaskRouter.post('/task/:id', tagtaskController.assignTagstoTask) // Assign tags to a task
+tagtaskRouter.delete('/task/:id', tagtaskController.deleteOne) // Delete a tag from a task
 
-// Exportar el router de usuarios
+// Export the tag-task router
 export default tagtaskRouter

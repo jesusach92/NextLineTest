@@ -3,7 +3,8 @@
 		"_postman_id": "eb88d0e4-ab95-4dcf-a62a-3938ef55818e",
 		"name": "NextLineTest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21193663"
+		"_exporter_id": "21193663",
+		"_collection_link": "https://www.postman.com/bold-moon-236434/workspace/nextlinetest/collection/21193663-eb88d0e4-ab95-4dcf-a62a-3938ef55818e?action=share&creator=21193663&source=collection_link"
 	},
 	"item": [
 		{
@@ -12,16 +13,6 @@
 				{
 					"name": "LogOut",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImM0NjE2ZmMzLTIzYzItNGYxZC1hYWJiLWFlNjhkMjMwYWVlYyIsInVzZXJUeXBlIjoiVXNlciIsImlhdCI6MTY4NDc5NTY0MSwiZXhwIjoxNjg1MzM1NjQxfQ.kCg8kqo7vAtWd5WDngx54EynccX1uljerpvTlT3kHwU",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -57,7 +48,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJUb2tlblNlc3Npb25FbnRpdHkiOnsidXNlclVVSUQiOiJlMjUyZTBmMC05NDZjLTQ4MGMtYjk2OS0yNWY4ZWQ4OWFiNGEifSwiaWF0IjoxNjg0Nzg0NjQ4LCJleHAiOjE2ODQ3ODgyNDh9.00oJgWWUDwgtyCOPBFTt5izhj7IbBnVExR81FHSUamw",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -66,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"Jesus Alberto Castillo\",\r\n \"email\":\"Prieba5@gmail.com\", \r\n    \"password\":\"12345678\"\r\n\r\n}",
+							"raw": "{\r\n\"name\": \"Jesus Alberto Castillo\",\r\n \"email\":\"jesusach92@gmail.com\", \r\n    \"password\":\"123456789\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,6 +109,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -138,6 +137,1034 @@
 							""
 						]
 					}
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "CreateComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taskUUID\":\"\",\r\n    \"comment\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCommentsByTask",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"Este es otro comentario\",\r\n    \"taskUUID\": \"5b220336-cc50-4848-aad1-e0c04d0d5690\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Comments/task/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Comments",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetComment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"Este es otro comentario\",\r\n    \"taskUUID\": \"5b220336-cc50-4848-aad1-e0c04d0d5690\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Comments/task/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Comments",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateComment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"Este es un comentario Actualizado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Comments/ea167cf6-5c17-449d-8101-90704f2ffe03",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Comments",
+								"ea167cf6-5c17-449d-8101-90704f2ffe03"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteComment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"Este es un comentario Actualizado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/Comments/ea167cf6-5c17-449d-8101-90704f2ffe03",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"Comments",
+								"ea167cf6-5c17-449d-8101-90704f2ffe03"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "GetFiles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/jesus/Downloads/1200px-Node.js_logo.png"
+								},
+								{
+									"key": "name",
+									"value": "Archivo1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/files",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetFile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/jesus/Downloads/1200px-Node.js_logo.png"
+								},
+								{
+									"key": "name",
+									"value": "Archivo1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/files",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteFile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/jesus/Downloads/1200px-Node.js_logo.png"
+								},
+								{
+									"key": "name",
+									"value": "Archivo1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/files/baf84d87-d75e-4f98-a8bc-bae1c3738484",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"files",
+								"baf84d87-d75e-4f98-a8bc-bae1c3738484"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadFile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/jesus/Downloads/1200px-Node.js_logo.png"
+								},
+								{
+									"key": "name",
+									"value": "Archivo1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/files",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"files"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LogBook",
+			"item": []
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "GetTags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags/04db72ff-fe53-4c1b-83e8-a2b706cf8f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags",
+								"04db72ff-fe53-4c1b-83e8-a2b706cf8f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteTag",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags/70cfdabf-5b1b-4abd-ba25-6955e89386b6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags",
+								"70cfdabf-5b1b-4abd-ba25-6955e89386b6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\":\"C++\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTag",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\":\".NET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tags/293a0bfd-ba5d-4de3-b719-0e56fccb8c9a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tags",
+								"293a0bfd-ba5d-4de3-b719-0e56fccb8c9a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TagTask",
+			"item": [
+				{
+					"name": "GetAllTagsofATask",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tagstask/task/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tagstask",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteOneTagofATask",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tagstask/task/3e08bd85-8222-43ca-947a-ccc70a97324c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tagstask",
+								"task",
+								"3e08bd85-8222-43ca-947a-ccc70a97324c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AssingTagtoTask",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tags\": [\"NodeJS\", \"AWS\", \"AZURE\", \"C*\", \"C++\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tagstask/task/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tagstask",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "CreateTask",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Desarrollar Nuevos Modulos de Sistema de Tareas",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Desarrollar Modulos del sistema de Tareas para la carga marisa de archivos",
+									"type": "text"
+								},
+								{
+									"key": "dueDate",
+									"value": "2022-05-24",
+									"type": "text"
+								},
+								{
+									"key": "isPublic",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "usersUUIDS",
+									"value": "c4616fc3-23c2-4f1d-aabb-ae68d230aeec",
+									"type": "text"
+								},
+								{
+									"key": "usersUUIDS",
+									"value": "d3d0258a-821f-4ae9-9351-422176f7032f",
+									"type": "text"
+								},
+								{
+									"key": "usersUUIDS",
+									"value": "1ec46b45-613c-4094-83ec-4ca34831f43c",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "responsible",
+									"value": "c4616fc3-23c2-4f1d-aabb-ae68d230aeec",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "comment",
+									"value": "Urge Resolver",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "NodeJS",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/jesus/Downloads/Archivo2.jpg",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "Archivo1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "AWS",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "AZURE",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "C#",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "C++",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTasks",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Desarrollar Nuevos Modulos de Sistema de Tareas\", \r\n    \"description\":\"Desarrollar Modulos del sistema de Tareas para la carga marisa de archivos\", \r\n    \"dueDate\":\"2022-05-24\", \r\n    \"isPublic\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tasks/search?KeyWord=MySQL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tasks",
+								"search"
+							],
+							"query": [
+								{
+									"key": "KeyWord",
+									"value": "MySQL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTask",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Desarrollar Nuevos Modulos de Sistema de Tareas\", \r\n    \"description\":\"Desarrollar Modulos del sistema de Tareas para la carga marisa de archivos\", \r\n    \"dueDate\":\"2022-05-24\", \r\n    \"isPublic\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tasks/e8bf9fdf-4db5-4663-8644-4cdd263dec09",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tasks",
+								"e8bf9fdf-4db5-4663-8644-4cdd263dec09"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteTask",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Desarrollar Nuevos Modulos de Sistema de Tareas\", \r\n    \"description\":\"Desarrollar Modulos del sistema de Tareas para la carga marisa de archivos\", \r\n    \"dueDate\":\"2022-05-24\", \r\n    \"isPublic\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tasks/0f4ad9ed-5351-48fe-aadc-ce072b407bac",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tasks",
+								"0f4ad9ed-5351-48fe-aadc-ce072b407bac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTask",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Desarrollar Nuevos Modulos de Sistema de Tareas\", \r\n    \"description\":\"Desarrollar Modulos del sistema de Tareas para la carga marisa de archivos\", \r\n    \"dueDate\":\"2022-06-24\", \r\n    \"isPublic\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTask",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Desarrollar Nuevos Modulos de Sistema de Tickets\", \r\n    \"description\":\"Desarrollar Modulos del sistema de Tickets para la carga marisa de archivos\", \r\n    \"dueDate\":\"2022-05-28\", \r\n    \"isPublic\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/tasks/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"tasks",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TaskShare",
+			"item": [
+				{
+					"name": "ShareTaskWithUsers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taskUUID\":  \"5b220336-cc50-4848-aad1-e0c04d0d5690\",\r\n    \"usersUUIDS\":[\"c4616fc3-23c2-4f1d-aabb-ae68d230aeec\",\"d3d0258a-821f-4ae9-9351-422176f7032f\",\"1ec46b45-613c-4094-83ec-4ca34831f43c\"],\r\n    \"responsible\":\"c4616fc3-23c2-4f1d-aabb-ae68d230aeec\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/sharedtasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"sharedtasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To Do Responsible ",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taskUUID\":  \"5b220336-cc50-4848-aad1-e0c04d0d5690\",\r\n    \"responsible\":\"1ec46b45-613c-4094-83ec-4ca34831f43c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/sharedtasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"sharedtasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stop Sharing Task With User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uuidtask\":  \"5b220336-cc50-4848-aad1-e0c04d0d5690\",\r\n    \"usersUUIDS\":[\"c4616fc3-23c2-4f1d-aabb-ae68d230aeec\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/sharedtasks/task/5b220336-cc50-4848-aad1-e0c04d0d5690/user/d3d0258a-821f-4ae9-9351-422176f7032f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"sharedtasks",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690",
+								"user",
+								"d3d0258a-821f-4ae9-9351-422176f7032f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stop Sharing Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uuidtask\":  \"5b220336-cc50-4848-aad1-e0c04d0d5690\",\r\n    \"usersUUIDS\":[\"c4616fc3-23c2-4f1d-aabb-ae68d230aeec\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/sharedtasks/task/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"sharedtasks",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Task Shared",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uuidtask\":  \"5b220336-cc50-4848-aad1-e0c04d0d5690\",\r\n    \"usersUUIDS\":[\"c4616fc3-23c2-4f1d-aabb-ae68d230aeec\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/sharedtasks/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"sharedtasks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shared users by task",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uuidtask\":  \"5b220336-cc50-4848-aad1-e0c04d0d5690\",\r\n    \"usersUUIDS\":[\"c4616fc3-23c2-4f1d-aabb-ae68d230aeec\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/Api/v1/sharedtasks/task/5b220336-cc50-4848-aad1-e0c04d0d5690",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Api",
+								"v1",
+								"sharedtasks",
+								"task",
+								"5b220336-cc50-4848-aad1-e0c04d0d5690"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -236,16 +1263,6 @@
 				{
 					"name": "GetUserByUUID",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTIzOTEsImV4cCI6MTY4NTM1MjM5MX0.VnzREKvBrsZnWy0VzlfU9ZJZqahYJj_SqFvRv8MruKo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -268,16 +1285,6 @@
 				{
 					"name": "DeleteUser",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTIzOTEsImV4cCI6MTY4NTM1MjM5MX0.VnzREKvBrsZnWy0VzlfU9ZJZqahYJj_SqFvRv8MruKo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -365,16 +1372,6 @@
 				{
 					"name": "UpdateUser",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTIzOTEsImV4cCI6MTY4NTM1MjM5MX0.VnzREKvBrsZnWy0VzlfU9ZJZqahYJj_SqFvRv8MruKo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -406,117 +1403,16 @@
 			]
 		},
 		{
-			"name": "Tasks",
+			"name": "FileTask",
 			"item": [
 				{
-					"name": "CreateTask",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ3OTYzNzMsImV4cCI6MTY4NTMzNjM3M30.dfypPjRtWAfOln_clKxPCxxTghW3PoqikCkwKUD7F74",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/Api/v1/Tasks",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"Api",
-								"v1",
-								"Tasks"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Tags",
-			"item": [
-				{
-					"name": "GetTags",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/Api/v1/tags",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"Api",
-								"v1",
-								"tags"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetTag",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/Api/v1/tags/04db72ff-fe53-4c1b-83e8-a2b706cf8f8d",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"Api",
-								"v1",
-								"tags",
-								"04db72ff-fe53-4c1b-83e8-a2b706cf8f8d"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DeleteTag",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/Api/v1/tags/70cfdabf-5b1b-4abd-ba25-6955e89386b6",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"Api",
-								"v1",
-								"tags",
-								"70cfdabf-5b1b-4abd-ba25-6955e89386b6"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "CreateTag",
+					"name": "Assing File Task",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tag\":\"C#\"\r\n}",
+							"raw": "{\r\n    \"taskUUID\":\"c67aec14-649f-4801-b8f7-2d2c2c97a1ab\"\r\n    ,\"fileUUID\":\"6ae16676-6baa-48f4-a0c1-d0fae433b02c\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -524,7 +1420,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/Api/v1/tags",
+							"raw": "http://localhost:3000/Api/v1/fileTask/c67aec14-649f-4801-b8f7-2d2c2c97a1ab",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -533,20 +1429,24 @@
 							"path": [
 								"Api",
 								"v1",
-								"tags"
+								"fileTask",
+								"c67aec14-649f-4801-b8f7-2d2c2c97a1ab"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "UpdateTag",
+					"name": "Get File by Task",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PATCH",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tag\":\".NET\"\r\n}",
+							"raw": "{\r\n    \"taskUUID\":\"c67aec14-649f-4801-b8f7-2d2c2c97a1ab\"\r\n    ,\"fileUUID\":\"6ae16676-6baa-48f4-a0c1-d0fae433b02c\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -554,7 +1454,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/Api/v1/tags/293a0bfd-ba5d-4de3-b719-0e56fccb8c9a",
+							"raw": "http://localhost:3000/Api/v1/fileTask/c67aec14-649f-4801-b8f7-2d2c2c97a1ab",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -563,8 +1463,8 @@
 							"path": [
 								"Api",
 								"v1",
-								"tags",
-								"293a0bfd-ba5d-4de3-b719-0e56fccb8c9a"
+								"fileTask",
+								"c67aec14-649f-4801-b8f7-2d2c2c97a1ab"
 							]
 						}
 					},
@@ -578,7 +1478,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6ImQzZDAyNThhLTgyMWYtNGFlOS05MzUxLTQyMjE3NmY3MDMyZiIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODQ4MTQzOTgsImV4cCI6MTY4NTM1NDM5OH0.2ikE95B9O49VVqceIkpT8WIE6fWchYvxvNNkG5RNQTE",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6IjcwNzUyMWU4LTBjNTEtNGI3YS1hNjIwLTdmMDA5YmZlODYyNyIsInVzZXJUeXBlIjoiQWRtaW4iLCJpYXQiOjE2ODU0NzE2OTQsImV4cCI6MTY4NjAxMTY5NH0.NMjcpJjQumzbkF7bHl8AjkIlV_S2eN0Qbzan7sYikww",
 				"type": "string"
 			}
 		]
