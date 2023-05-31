@@ -46,12 +46,13 @@ export default class TaskUseCases {
    * @returns {Object} - Object containing the total count and the ponderated tasks.
    */
   tasksPonderation = ({ tasks, query }) => {
-    const { KeyWord = '' } = query
+    const { keyWord = '' } = query
+    console.log(keyWord)
     if (Array.isArray(tasks) && tasks.length > 0) {
       const ponderatedTasks = tasks
-        .filter((task) => task.description.includes(KeyWord.toString()))
+        .filter((task) => task.description.includes(keyWord.toString()))
         .map((task) => {
-          const ponderationValue = this.PonderationCalculus(task, KeyWord)
+          const ponderationValue = this.PonderationCalculus(task, keyWord)
           return { task, ponderationValue }
         })
       ponderatedTasks.sort(
@@ -148,7 +149,7 @@ export default class TaskUseCases {
     let ponderation = 0
 
     // Apply the ponderation for each criterion
-    if (task.description.includes(keyword)) {
+    if (task.description.includes(keyword.toString())) {
       ponderation += PonderationCriteria.KeyWord
     }
     ponderation += task.usersShared * PonderationCriteria.usersShared
@@ -156,7 +157,6 @@ export default class TaskUseCases {
     const dueDate = this.dueDate(task.dueDate)
     ponderation += dueDate
     ponderation += PonderationCriteria.fileFormat[task.fileFormat] ?? 0
-
     return ponderation
   }
 
@@ -171,7 +171,6 @@ export default class TaskUseCases {
     const dueFinalDate = new Date(dueDate)
     const differ = today.getTime() - dueFinalDate.getTime()
     const restDay = Math.ceil(differ / (1000 * 3600 * 24))
-
     return restDay
   }
 }

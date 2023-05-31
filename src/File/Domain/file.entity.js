@@ -1,20 +1,29 @@
-export default class TagTaskEntity {
-  constructor(uuid, taskUUID, tagUUID) {
+/**
+ * Represents a File entity.
+ */
+export default class FileEntity {
+  /**
+   * Constructor of FileEntity.
+   * @param {Object} fileData - File data.
+   */
+  constructor({ uuid, name, format, url }) {
     this.uuid = uuid
-    this.taskUUID = taskUUID
-    this.tagUUID = tagUUID
+    this.name = name
+    this.format = format
+    this.url = url
   }
 
   /**
-   * Generates and returns a frozen object representing the tag-task relationship.
-   * @returns {Object} - Frozen object representing the tag-task relationship.
+   * Generates a file object with the entity's properties.
+   * @returns {Object} - Frozen file object.
    */
-  generatetagtask = () => {
-    const TagTask = {
+  generateFile = () => {
+    const File = {
       uuid: this.uuid,
-      taskUUID: this.taskUUID,
-      tagUUID: this.tagUUID,
+      name: this.name,
+      format: this.format,
+      url: this.url,
     }
-    return Object.freeze(TagTask)
+    return Object.freeze(File)
   }
 }

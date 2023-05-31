@@ -1,15 +1,15 @@
 import { Router } from 'express'
 import { userController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
-// Crear instancia del router de usuarios
+// Create an instance of the user router
 const userRouter = Router()
 
-// Definir rutas de usuarios y asignar los métodos del controlador
-userRouter.get('/', userController.getAll) // Obtener todos los usuarios
-userRouter.get('/:id', userController.getOne) // Obtener un usuario por su UUID
-userRouter.post('/', userController.createOne) // Crear un nuevo usuario
-userRouter.patch('/:id', userController.updateOne) // Actualizar un usuario
-userRouter.delete('/:id', userController.deleteOne) // Eliminar un usuario por su UUID
+// Define user routes and assign controller methods
+userRouter.get('/', userController.getAll) // Get all users
+userRouter.get('/:id', userController.getOne) // Get a user by UUID
+userRouter.post('/', userController.createOne) // Create a new user
+userRouter.patch('/:id', userController.updateOne) // Update a user
+userRouter.delete('/:id', userController.deleteOne) // Delete a user by UUID
 
-// Exportar el router de usuarios
+// Export the user router
 export default userRouter

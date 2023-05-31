@@ -7,13 +7,17 @@ export default class UserEntity {
     this.uuid = uuid
   }
 
+  /**
+   * Generates a user object.
+   * @returns {Object} - User object.
+   */
   generateUser = () => {
     const User = {
       name: this.name,
       email: this.email,
       userType: this.userType,
       password: this.password,
-      uuid: this.uuid
+      uuid: this.uuid,
     }
     return Object.freeze(User)
   }

@@ -92,7 +92,7 @@ export default class TaskMiddleweres {
       req.task = { ...req.task, File: File.message }
       next()
     }
-    const fileTask = await this.fileTaskUseCases.assingFile({
+    const fileTask = await this.fileTaskUseCases.assignFile({
       fileUUID: File.uuid,
       taskUUID: req.task.uuid,
     })
@@ -149,6 +149,7 @@ export default class TaskMiddleweres {
         tasks[i].fileFormat = fileFormat.format
       }
     }
+    req.tasks = tasks
     next()
   }
 }

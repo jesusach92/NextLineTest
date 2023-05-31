@@ -18,14 +18,11 @@ export default class FileTaskUseCases {
     try {
       const { fileUUID } = await this.fileTaskRepository.findFileTask(taskUUID)
       const file = await this.fileUseCases.findFile(fileUUID)
-
       if (file instanceof Error) {
         return new Error(`No files found for task: ${taskUUID}`)
       }
-
       return file
     } catch (error) {
-      console.log(error)
       return new Error('No files to display')
     }
   }
@@ -48,7 +45,7 @@ export default class FileTaskUseCases {
 
       const uuid = this.uuidUtils.generate()
       const fileTaskEntity = new FileTaskEntity(uuid, taskUUID, fileUUID)
-      console.log(fileTaskEntity.generateFile())
+
       await this.fileTaskRepository.createOne(fileTaskEntity.generateFile())
       return {
         Message: `File ${fileUUID} assigned to task ${taskUUID} successfully`,
