@@ -53,6 +53,7 @@ export default class MySQLTaskShareRepository {
    */
   getRelation = async (userUUID, taskUUID) => {
     try {
+      console.log(userUUID, taskUUID)
       const db = await this.MySQL.createConnection()
       const [[taskShared]] = await db.query(
         'SELECT responsible, uuid, taskUUID, userUUID FROM taskshared WHERE taskUUID = ? AND userUUID = ?;',
@@ -113,12 +114,12 @@ export default class MySQLTaskShareRepository {
    * @param {boolean} isResponsible - Responsible status.
    * @throws {Error} - If an error occurs or the update fails.
    */
-  updateResponsible = async (userUUID, isResponsible) => {
+  updateResponsible = async (userUUID, isResponsible, taskUUID) => {
     try {
       const db = await this.MySQL.createConnection()
       const [ResultSetHeader] = await db.query(
-        'UPDATE taskshared SET responsible = ? WHERE userUUID = ?;',
-        [isResponsible, userUUID]
+        'UPDATE taskshared SET responsible = ? WHERE userUUID = ? AND taskUUID = ?;',
+        [isResponsible, userUUID, taskUUID]
       )
       await db.end()
 

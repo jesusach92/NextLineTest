@@ -109,12 +109,17 @@ export default class TaskShareUseCases {
       if (userResponsible && userResponsible.userUUID !== userUUID) {
         await this.taskshareRepository.updateResponsible(
           userResponsible.userUUID,
-          false
+          false,
+          taskUUID
         )
-        await this.taskshareRepository.updateResponsible(userUUID, true)
+        await this.taskshareRepository.updateResponsible(
+          userUUID,
+          true,
+          taskUUID
+        )
         return `Successfully assigned user ${userUUID} as responsible`
       }
-      await this.taskshareRepository.updateResponsible(userUUID, true)
+      await this.taskshareRepository.updateResponsible(userUUID, true, taskUUID)
       return `Successfully assigned user ${userUUID} as responsible`
     } catch (error) {
       return new Error(error.message)
