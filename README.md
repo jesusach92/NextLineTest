@@ -57,5 +57,4 @@ Si tienes alguna pregunta o consulta, no dudes en contactarme.
 
 ## Licencia
 
-Licencia
 Este proyecto está bajo la Licencia ISC.
