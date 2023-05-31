@@ -1,16 +1,16 @@
 import { Router } from 'express'
 import { authenticationController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
-// Crear instancia del router de autenticación
+// Create an instance of the authentication router
 const authenticationRouter = Router()
 
-// Definir rutas de autenticación y asignar los métodos del controlador
+// Define authentication routes and assign controller methods
 
 authenticationRouter.post('/', authenticationController.logIn)
-// Ruta para iniciar sesión
+// Route for logging in
 
 authenticationRouter.delete('/', authenticationController.logOut)
-// Ruta para cerrar sesión de un usuario por su UUID
+// Route for logging out a user by their UUID
 
-// Exportar el router de autenticación
+// Export the authentication router
 export default authenticationRouter

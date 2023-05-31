@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import { tagtaskController } from '../../../Shared/Infrastructure/Dependencies/container.dependencies.js'
 
-// Crear instancia del router de usuarios
+// Create an instance of the tag-task router
 const tagtaskRouter = Router()
 
-// Definir rutas de usuarios y asignar los métodos del controlador
-tagtaskRouter.get('/task/:id', tagtaskController.getTagsTask) // Obtener todos los usuarios
-tagtaskRouter.post('/task/:id', tagtaskController.assignTagstoTask) // Crear un nuevo usuario
-tagtaskRouter.delete('/task/:id', tagtaskController.deleteOne) // Eliminar un usuario por su UUID
+// Define routes for tag-task and assign the controller methods
+tagtaskRouter.get('/task/:id', tagtaskController.getTagsTask) // Get all tags of a task
+tagtaskRouter.post('/task/:id', tagtaskController.assignTagstoTask) // Assign tags to a task
+tagtaskRouter.delete('/task/:id', tagtaskController.deleteOne) // Delete a tag from a task
 
-// Exportar el router de usuarios
+// Export the tag-task router
 export default tagtaskRouter

@@ -1,1 +1,1 @@
-https://api.postman.com/collections/21193663-eb88d0e4-ab95-4dcf-a62a-3938ef55818e?access_key=PMAT-01H1632YSK138FTHNKBX0K0M8K
+https://www.postman.com/bold-moon-236434/workspace/nextlinetest/collection/21193663-eb88d0e4-ab95-4dcf-a62a-3938ef55818e?action=share&creator=21193663

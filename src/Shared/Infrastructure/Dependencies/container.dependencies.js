@@ -1,4 +1,4 @@
-// User Imposts
+// User Imports
 import {
   UserUseCases,
   UserController,
@@ -42,7 +42,6 @@ import {
 } from '../../../TagTask/index.js'
 
 // Task Imports
-
 import {
   TaskUsecases,
   TaskMySQLRepository,
@@ -57,75 +56,84 @@ import {
   TaskShareController,
 } from '../../../TaskShare/index.js'
 
-// User
+import {
+  FileTaskController,
+  FileTaskMySQLRepository,
+  FileTaskUseCases,
+} from '../../../FileTask/index.js'
 
-const userRepository = new UserMySQLRepository()
-const userUseCases = new UserUseCases(userRepository)
-export const userController = new UserController(userUseCases)
+// User
+const userRepository = new UserMySQLRepository() // Instantiate the user repository
+const userUseCases = new UserUseCases(userRepository) // Instantiate the user use cases
+export const userController = new UserController(userUseCases) // Instantiate the user controller
 
 // Auth
-const authenticationRepository = new AuthenticationMySQLRepository()
+const authenticationRepository = new AuthenticationMySQLRepository() // Instantiate the authentication repository
 const authenticationUseCases = new AuthenticationUseCases(
   authenticationRepository,
   userUseCases
-)
+) // Instantiate the authentication use cases
 export const authenticationController = new AuthenticationController(
   authenticationUseCases
-)
+) // Instantiate the authentication controller
 
 // Task
-
-const taskRepository = new TaskMySQLRepository()
-const taskUseCases = new TaskUsecases(taskRepository)
-export const taskController = new TaskController(taskUseCases)
+const taskRepository = new TaskMySQLRepository() // Instantiate the task repository
+const taskUseCases = new TaskUsecases(taskRepository) // Instantiate the task use cases
+export const taskController = new TaskController(taskUseCases) // Instantiate the task controller
 
 // Comments
-
-const commentRepository = new CommentMySQLRepository()
+const commentRepository = new CommentMySQLRepository() // Instantiate the comment repository
 const commentUseCases = new CommentUsecases(
   commentRepository,
   userUseCases,
   taskUseCases
-)
-export const commentController = new CommentController(commentUseCases)
+) // Instantiate the comment use cases
+export const commentController = new CommentController(commentUseCases) // Instantiate the comment controller
 
 // Tags
-
-const tagRepository = new TagMySQLRepository()
-const tagUseCases = new TagUsecases(tagRepository)
-export const tagController = new TagController(tagUseCases)
+const tagRepository = new TagMySQLRepository() // Instantiate the tag repository
+const tagUseCases = new TagUsecases(tagRepository) // Instantiate the tag use cases
+export const tagController = new TagController(tagUseCases) // Instantiate the tag controller
 
 // Files
+const fileRepository = new FileMySQLRepository() // Instantiate the file repository
+const fileStorage = new FileStorageRepository() // Instantiate the file storage
+const fileUseCases = new FileUsecases(fileRepository, fileStorage) // Instantiate the file use cases
+export const fileController = new FileController(fileUseCases) // Instantiate the file controller
 
-const fileRepository = new FileMySQLRepository()
-const fileStorage = new FileStorageRepository()
-const fileUseCases = new FileUsecases(fileRepository, fileStorage)
-export const fileController = new FileController(fileUseCases)
+// File Task
+const fileTaskRepository = new FileTaskMySQLRepository() // Instantiate the file task repository
+const fileTaskUseCases = new FileTaskUseCases(
+  fileTaskRepository,
+  fileUseCases,
+  taskUseCases
+) // Instantiate the file task use cases
+export const fileTaskController = new FileTaskController(fileTaskUseCases) // Instantiate the file task controller
 
 // TagTask
-
-const tagtaskRepository = new TagTaskMySQLRepository()
+const tagtaskRepository = new TagTaskMySQLRepository() // Instantiate the tag task repository
 const tagtaskUseCases = new TagTaskUsecases(
   tagtaskRepository,
   taskUseCases,
   tagUseCases
-)
-export const tagtaskController = new TagTaskController(tagtaskUseCases)
+) // Instantiate the tag task use cases
+export const tagtaskController = new TagTaskController(tagtaskUseCases) // Instantiate the tag task controller
 
 // TaskShare
-
-const taskshareRepository = new TaskShareMySQLRepository()
+const taskshareRepository = new TaskShareMySQLRepository() // Instantiate the task share repository
 const taskshareUseCases = new TaskShareUsecases(
   taskshareRepository,
   userUseCases,
   taskUseCases
-)
-export const taskshareController = new TaskShareController(taskshareUseCases)
+) // Instantiate the task share use cases
+export const taskshareController = new TaskShareController(taskshareUseCases) // Instantiate the task share controller
 
 // Task Middleweres
 export const taskMiddleweres = new TaskMiddleweres(
   tagtaskUseCases,
   taskshareUseCases,
   commentUseCases,
-  fileUseCases
-)
+  fileUseCases,
+  fileTaskUseCases
+) // Instantiate the task middlewares

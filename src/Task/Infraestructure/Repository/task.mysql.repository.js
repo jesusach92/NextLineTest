@@ -5,6 +5,10 @@ export default class MySQLTaskRepository {
     this.MySQL = new MySQLConnection()
   }
 
+  /**
+   * Retrieves all tasks from the database.
+   * @returns {Promise<Array>} Array of tasks.
+   */
   getAll = async () => {
     try {
       const db = await this.MySQL.createConnection()
@@ -18,6 +22,10 @@ export default class MySQLTaskRepository {
     }
   }
 
+  /**
+   * Retrieves public tasks from the database.
+   * @returns {Promise<Array>} Array of public tasks.
+   */
   getPublicTasks = async () => {
     try {
       const db = await this.MySQL.createConnection()
@@ -34,6 +42,11 @@ export default class MySQLTaskRepository {
     }
   }
 
+  /**
+   * Retrieves a single task from the database by its UUID.
+   * @param {string} uuid - Task UUID.
+   * @returns {Promise<Object>} Task object.
+   */
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
@@ -50,6 +63,10 @@ export default class MySQLTaskRepository {
     }
   }
 
+  /**
+   * Creates a new task in the database.
+   * @param {Object} task - Task object.
+   */
   createOne = async (task) => {
     try {
       const db = await this.MySQL.createConnection()
@@ -65,6 +82,12 @@ export default class MySQLTaskRepository {
     }
   }
 
+  /**
+   * Updates a task in the database.
+   * @param {string} uuid - Task UUID.
+   * @param {Object} fieldToUpdate - Field and value to update.
+   * @returns {string} Updated task UUID.
+   */
   updateOne = async (uuid, fieldToUpdate) => {
     try {
       const db = await this.MySQL.createConnection()
@@ -82,6 +105,10 @@ export default class MySQLTaskRepository {
     }
   }
 
+  /**
+   * Deletes a task from the database.
+   * @param {string} uuid - Task UUID.
+   */
   deleteOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()

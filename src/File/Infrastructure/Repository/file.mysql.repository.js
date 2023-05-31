@@ -5,11 +5,16 @@ export default class MySQLFileRepository {
     this.MySQL = new MySQLConnection()
   }
 
+  /**
+   * Retrieves all files.
+   * @returns {Array} - Array of files.
+   * @throws {Error} - If there's an error retrieving the files from the database.
+   */
   getAll = async () => {
     try {
       const db = await this.MySQL.createConnection()
       const [files] = await db.query(
-        'SELECT uuid, name, format, url  FROM files;'
+        'SELECT uuid, name, format, url FROM files;'
       )
       db.end()
       return files
@@ -18,10 +23,16 @@ export default class MySQLFileRepository {
     }
   }
 
+  /**
+   * Retrieves a specific file by its UUID.
+   * @param {string} uuid - UUID of the file.
+   * @returns {Object} - File object.
+   * @throws {Error} - If there's an error retrieving the file from the database or the file is not found.
+   */
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [[file]] = await db.query('SELECT * FROM files WHERE uuid= ?;', [
+      const [[file]] = await db.query('SELECT * FROM files WHERE uuid = ?;', [
         uuid,
       ])
       await db.end()
@@ -34,14 +45,19 @@ export default class MySQLFileRepository {
     }
   }
 
+  /**
+   * Creates a new file.
+   * @param {Object} file - File object to be created.
+   * @throws {Error} - If there's an error creating the file in the database.
+   */
   createOne = async (file) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query('INSERT INTO files SET ?;', [
+      const [resultSetHeader] = await db.query('INSERT INTO files SET ?;', [
         file,
       ])
       await db.end()
-      if (ResultSetHeader && ResultSetHeader.insertId === 0) {
+      if (resultSetHeader && resultSetHeader.insertId === 0) {
         throw new Error(`Error de BD el archivo se encuentra en ${file.url}`)
       }
     } catch (error) {
@@ -49,15 +65,21 @@ export default class MySQLFileRepository {
     }
   }
 
+  /**
+   * Updates a file by its UUID.
+   * @param {string} uuid - UUID of the file to be updated.
+   * @param {Object} file - Updated file object.
+   * @throws {Error} - If there's an error updating the file in the database.
+   */
   updateOne = async (uuid, file) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query(
-        'UPDATE files SET file= ? WHERE uuid = ?',
+      const [resultSetHeader] = await db.query(
+        'UPDATE files SET file = ? WHERE uuid = ?',
         [file, uuid]
       )
       await db.end()
-      if (ResultSetHeader.affectedRows === 0) {
+      if (resultSetHeader.affectedRows === 0) {
         throw new Error('No se pudo Actualizar')
       }
     } catch (error) {
@@ -65,15 +87,20 @@ export default class MySQLFileRepository {
     }
   }
 
+  /**
+   * Deletes a file by its UUID.
+   * @param {string} uuid - UUID of the file to be deleted.
+   * @throws {Error} - If there's an error deleting the file from the database.
+   */
   deleteOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
-      const [ResultSetHeader] = await db.query(
-        'DELETE FROM files WHERE uuid=?',
+      const [resultSetHeader] = await db.query(
+        'DELETE FROM files WHERE uuid = ?',
         [uuid]
       )
       await db.end()
-      if (ResultSetHeader.affectedRows === 0) {
+      if (resultSetHeader.affectedRows === 0) {
         throw new Error('No se encontro Archivo para Borrar')
       }
     } catch (error) {

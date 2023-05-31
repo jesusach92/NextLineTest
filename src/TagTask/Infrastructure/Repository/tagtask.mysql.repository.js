@@ -5,6 +5,12 @@ export default class MySQLTagTaskRepository {
     this.MySQL = new MySQLConnection()
   }
 
+  /**
+   * Retrieves all tag-task relationships associated with a task from the MySQL database.
+   * @param {string} uuidTask - The UUID of the task.
+   * @returns {Promise<Array>} - A promise that resolves to an array of tag-task relationships.
+   * @throws {Error} - If there is an error while retrieving the data.
+   */
   getAll = async (uuidTask) => {
     try {
       const db = await this.MySQL.createConnection()
@@ -18,6 +24,12 @@ export default class MySQLTagTaskRepository {
     }
   }
 
+  /**
+   * Retrieves a specific tag-task relationship from the MySQL database.
+   * @param {string} uuid - The UUID of the tag-task relationship.
+   * @returns {Promise<Object>} - A promise that resolves to the tag-task relationship.
+   * @throws {Error} - If the tag-task relationship is not found or there is an error while retrieving the data.
+   */
   findOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
@@ -35,6 +47,11 @@ export default class MySQLTagTaskRepository {
     }
   }
 
+  /**
+   * Creates a new tag-task relationship in the MySQL database.
+   * @param {Object} tagtask - The tag-task relationship object.
+   * @throws {Error} - If the tag-task relationship cannot be created or there is an error while saving the data.
+   */
   createOne = async (tagtask) => {
     try {
       const db = await this.MySQL.createConnection()
@@ -50,6 +67,11 @@ export default class MySQLTagTaskRepository {
     }
   }
 
+  /**
+   * Deletes a tag-task relationship from the MySQL database.
+   * @param {string} uuid - The UUID of the tag-task relationship to delete.
+   * @throws {Error} - If the tag-task relationship cannot be deleted or there is an error while deleting the data.
+   */
   deleteOne = async (uuid) => {
     try {
       const db = await this.MySQL.createConnection()
